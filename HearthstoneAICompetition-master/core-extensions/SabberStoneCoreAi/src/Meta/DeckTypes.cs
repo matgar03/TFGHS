@@ -16,6 +16,7 @@ namespace SabberStoneCoreAi.Meta
 	public enum DeckTypes
 	{
 		AggroPirateWarrior,
+		ToyDeck,
 		MurlocDruid,
 		MidrangeJadeShaman,
 		RenoKazakusMage,

@@ -23,28 +23,15 @@ namespace SabberStoneCoreAi.Agent
 
 		public override PlayerTask GetMove(SabberStoneCoreAi.POGame.POGame poGame)
 		{
-			List<PlayerTask> simulatedactions = new List<PlayerTask>();
-			simulatedactions.AddRange(poGame.CurrentPlayer.Options());
-			Dictionary<PlayerTask, SabberStoneCoreAi.POGame.POGame> sim = poGame.Simulate(simulatedactions);
 
-			Dictionary<PlayerTask, SabberStoneCoreAi.POGame.POGame>.KeyCollection keyColl = sim.Keys;
-
-			foreach (PlayerTask key in keyColl)
-			{
-				if (key.PlayerTaskType == PlayerTaskType.END_TURN)
-					Console.Write(sim[key].CurrentPlayer.DeckCards);
-
-				//do something with simulated actions
-				//in case an EndTurn was simulated you need to set your own cards
-				//see POGame.prepareOpponent() for an example
-			}
-
-			return poGame.CurrentPlayer.Options()[0];
+			List<PlayerTask> options = poGame.CurrentPlayer.Options();
+	
+			return null;
 		}
 
 		public override void InitializeAgent()
 		{
-			Rnd = new Random();
+			Rnd = new Random(101);
 		}
 
 		public override void InitializeGame()

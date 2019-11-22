@@ -322,6 +322,41 @@ namespace SabberStoneCoreAi.Meta
 			Cards.FromName("Naga Corsair"),
 		};
 
+		public static List<Card> ToyDeck => new List<Card>()
+		{
+			Cards.FromName("Inner Rage"),
+			Cards.FromName("Stonetusk Boar"),
+			Cards.FromName("Fiery War Axe"),
+			Cards.FromName("Inner Rage"),
+			Cards.FromName("Abusive Sergeant"),
+			Cards.FromName("Bloodfen Raptor"),
+			Cards.FromName("Charge"),
+			Cards.FromName("Elven Archer"),
+			Cards.FromName("Murloc Raider"),
+			Cards.FromName("Stonetusk Boar"),
+			Cards.FromName("Ironfur Grizzly"),
+			Cards.FromName("Whirlwind"),
+			Cards.FromName("Warsong Commander"),
+			Cards.FromName("Murloc Raider"),
+			Cards.FromName("Whirlwind"),
+			Cards.FromName("Fiery War Axe"),
+			Cards.FromName("Armorsmith"),
+			Cards.FromName("Deathwing"),
+			Cards.FromName("Bloodhoof Brave"),
+			Cards.FromName("Armorsmith"),
+			Cards.FromName("Bloodfen Raptor"),
+			Cards.FromName("Execute"),
+			Cards.FromName("Heroic Strike"),
+			Cards.FromName("Elven Archer"),
+			Cards.FromName("Heroic Strike"),
+			Cards.FromName("Ironfur Grizzly"),
+			Cards.FromName("Warsong Commander"),
+			Cards.FromName("Execute"),
+			Cards.FromName("Bloodhoof Brave"),
+			Cards.FromName("Kor'kron Elite")
+			
+		};
+
 		/// <summary>
 		/// RENO MAGE DECK LIST GUIDE (JANUARY 2017, STANDARD) – SEASON 34
 		/// http://www.hearthstonetopdecks.com/decks/reno-kazakus-mage-deck-list-guide-standard/
