@@ -29,5 +29,14 @@ namespace SabberStoneCoreAi.src
 			}
 			return null;
 		}
+		public int getHijoCount()
+		{
+			return hijoCount;
+		}
+
+		public T getNodo()
+		{
+			return nodo;
+		}
 	}
 }
