@@ -24,7 +24,7 @@ namespace SabberStoneCoreAi.Agent
 
 		public abstract void FinalizeGame();
 
-		public abstract void FinalizeAgent();
+		public abstract void FinalizeAgent(;
 
 	}
 }
