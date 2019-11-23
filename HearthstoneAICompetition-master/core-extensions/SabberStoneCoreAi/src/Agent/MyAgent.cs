@@ -34,7 +34,7 @@ namespace SabberStoneCoreAi.Agent
 				arbol.AddHijo(new Tuple<SabberStoneCoreAi.POGame.POGame, PlayerTask>(dic[t], t));
 
 				if (t.PlayerTaskType != PlayerTaskType.END_TURN)
-					generateTree(arbol.getHijo(arbol.getHijoCount() - 1));
+					generateTree(arbol.getHijo(arbol.getHijoCount()));
 
 			}
 	
@@ -50,7 +50,7 @@ namespace SabberStoneCoreAi.Agent
 			{
 				arbol.AddHijo(new Tuple<SabberStoneCoreAi.POGame.POGame, PlayerTask>(dic[t], t));
 				if (t.PlayerTaskType != PlayerTaskType.END_TURN)
-					generateTree(arbol.getHijo(arbol.getHijoCount()- 1));
+					generateTree(arbol.getHijo(arbol.getHijoCount()));
 
 			}
 
