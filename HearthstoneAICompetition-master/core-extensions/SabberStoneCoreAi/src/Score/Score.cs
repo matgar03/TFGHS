@@ -32,7 +32,11 @@ namespace SabberStoneCoreAi.Score
 
 		public int HeroHp => Controller.Hero.Health;
 
+		public int HeroAr => Controller.Hero.Armor;
+
 		public int OpHeroHp => Controller.Opponent.Hero.Health;
+
+		public int OpHeroAr => Controller.Opponent.Hero.Armor;
 
 		public int HeroAtk => Controller.Hero.TotalAttackDamage;
 
