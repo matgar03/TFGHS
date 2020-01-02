@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using SabberStoneCore.Tasks;
@@ -15,10 +14,8 @@ namespace SabberStoneCoreAi.Agent
 	{
 		private Random Rnd = new Random();
 		private int np = 3;
-		private LinkedList<PlayerTask> buffermoves;
-		private LinkedList<PlayerTask> provisional;
+		private Stack<PlayerTask> buffermoves;
 		private int bestscore;
-		PlayerTask finturn;
 		public override void FinalizeAgent()
 		{
 		}
@@ -31,85 +28,32 @@ namespace SabberStoneCoreAi.Agent
 		{
 			if (buffermoves.Count == 0)
 			{
+				ArbolGener<Tuple<SabberStoneCoreAi.POGame.POGame, PlayerTask>> arbol =
+					new ArbolGener<Tuple<SabberStoneCoreAi.POGame.POGame, PlayerTask>>(new Tuple<SabberStoneCoreAi.POGame.POGame, PlayerTask>(poGame, null));
+
 				List<PlayerTask> options = poGame.CurrentPlayer.Options();
 
 				Dictionary<PlayerTask, SabberStoneCoreAi.POGame.POGame> dic = poGame.Simulate(options);
-
 				foreach (PlayerTask t in options)
 				{
 
+					arbol.AddHijo(new Tuple<SabberStoneCoreAi.POGame.POGame, PlayerTask>(dic[t], t));
 
 					if (t.PlayerTaskType != PlayerTaskType.END_TURN)
-					{
-						provisional = new LinkedList<PlayerTask>();
-						provisional.AddLast(t);
-						generarSecuencia(t, dic[t]);
-					}
+						generateTree(arbol.getHijo(arbol.getHijoCount()));
 					else
 					{
-						finturn = t;
 						bestscore = this.getScore(dic[t]);
-						buffermoves = new LinkedList<PlayerTask>();
-						provisional.AddLast(t);
+						buffermoves = new Stack<PlayerTask>();
+						buffermoves.Push(t);
 					}
 
 				}
-
 			}
-			PlayerTask sol;
-			if (buffermoves.Count != 0)
-			{
-				sol = buffermoves.First.Value;
-				buffermoves.RemoveFirst();
-			}
-			else
-				sol = finturn;
-			
-			return sol;
+			return buffermoves.Pop();
 		}
 
-		private void generarSecuencia(PlayerTask task, SabberStoneCoreAi.POGame.POGame poGame)
-		{
-			if (bestscore == Int32.MaxValue)
-			{
-				
-			}
-			else
-			{
-				List<PlayerTask> options = poGame.CurrentPlayer.Options();
-				Dictionary<PlayerTask, SabberStoneCoreAi.POGame.POGame> dic = poGame.Simulate(options);
-
-				foreach (PlayerTask t in options)
-				{
-					if (t.PlayerTaskType != PlayerTaskType.END_TURN)
-					{
-						provisional.AddLast(t);
-						generarSecuencia(t, dic[t]);
-						provisional.RemoveLast();
-					}
-					else
-					{
-						if (bestscore < this.getScore(dic[t]))
-						{
-							CloneProv();
-							buffermoves.AddLast(t);
-							bestscore = this.getScore(dic[t]);
-						}
-					}
-
-				}
-				if (options.Count == 0)
-				{
-					if (bestscore < this.getScore(poGame))
-					{
-						CloneProv();
-						bestscore = this.getScoreNop(poGame);
-					}
-				}
-			}
-		}
-
-		/*private void generateTree(ArbolGener<Tuple<SabberStoneCoreAi.POGame.POGame, PlayerTask>> arbol)
+		private void generateTree(ArbolGener<Tuple<SabberStoneCoreAi.POGame.POGame, PlayerTask>> arbol)
 		{
 			Tuple<SabberStoneCoreAi.POGame.POGame, PlayerTask> tupla = arbol.getNodo();
 			List<PlayerTask> options = tupla.Item1.CurrentPlayer.Options();
@@ -138,7 +82,7 @@ namespace SabberStoneCoreAi.Agent
 
 			}
 
-		}*/
+		}
 
 		private int getScore (SabberStoneCoreAi.POGame.POGame poGame)
 		{
@@ -146,26 +90,13 @@ namespace SabberStoneCoreAi.Agent
 
 		}
 
-		private int getScoreNop(SabberStoneCoreAi.POGame.POGame poGame)
-		{
-			return new ScoreAux { Controller = poGame.CurrentPlayer }.Rate();
 
-		}
-
-		void CloneProv()
-		{
-			buffermoves = new LinkedList<PlayerTask>();
-			foreach (PlayerTask n in provisional){
-				buffermoves.AddLast(n);
-			}
-		}
 
 
 		public override void InitializeAgent()
 		{
 			Rnd = new Random(101);
-			buffermoves = new LinkedList<PlayerTask>();
-			provisional = new LinkedList<PlayerTask>();
+			buffermoves = new Stack<PlayerTask>();
 		}
 
 		public override void InitializeGame()
