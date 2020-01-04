@@ -27,8 +27,6 @@ namespace SabberStoneCoreAi.Score
 
 			result += (HeroHp - OpHeroHp) * 1000;
 
-			result -= 10000 * HeroAr;
-
 			return result;
 		}
 
