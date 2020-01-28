@@ -35,7 +35,7 @@ namespace SabberStoneCoreAi.Agent.ExampleAgents
 			var p = state.CurrentPlayer.PlayerId == playerId ? state.CurrentPlayer : state.CurrentOpponent;
 			switch ( state.CurrentPlayer.HeroClass )
 			{
-				case CardClass.WARRIOR: return new AggroScore { Controller = p }.Rate();
+				case CardClass.WARRIOR: return new ScoreAux { Controller = p }.Rate();
 				case CardClass.MAGE: 	return new ControlScore { Controller = p }.Rate();
 				default: 				return new MidRangeScore { Controller = p }.Rate();
 			}
