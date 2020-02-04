@@ -53,6 +53,11 @@ namespace SabberStoneCoreAi.Agent
 			++visits;
 			this.value += value;
 		}
+
+		private int getStateValue(POGame.POGame state)
+		{
+			return new AggroScore { Controller = state.CurrentOpponent }.Rate();
+		}
 	}
 
 

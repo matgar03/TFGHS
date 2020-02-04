@@ -142,13 +142,13 @@ namespace SabberStoneCoreAi.Agent
 
 		private int getScore (SabberStoneCoreAi.POGame.POGame poGame)
 		{
-			 return new ScoreAux { Controller = poGame.CurrentOpponent }.Rate();
+			 return new ScoreUtility { Controller = poGame.CurrentOpponent }.Rate();
 
 		}
 
 		private int getScoreNop(SabberStoneCoreAi.POGame.POGame poGame)
 		{
-			return new ScoreAux { Controller = poGame.CurrentPlayer }.Rate();
+			return new ScoreUtility { Controller = poGame.CurrentPlayer }.Rate();
 
 		}
 

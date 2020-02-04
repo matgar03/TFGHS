@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SabberStoneCore.Tasks.PlayerTasks;
 using SabberStoneCoreAi.Agent;
+using SabberStoneCoreAi.Score;
 
 namespace SabberStoneCoreAi.src.Agent
 {
@@ -61,10 +62,14 @@ namespace SabberStoneCoreAi.src.Agent
 		public Nodo getBestNode()
 		{
 			sortedNodes.Sort((x, y) => y.getAverageValue().CompareTo(x.getAverageValue()));
-			if (end_turn.getAverageValue() > sortedNodes[0].getAverageValue())
+			if (end_turn != null && (sortedNodes.Count == 0 || end_turn.getAverageValue() > sortedNodes[0].getAverageValue()))
 				return end_turn;
 			else
 				return sortedNodes[0];
+		}
+		private int getStateValue(POGame.POGame state)
+		{
+			return new AggroScore { Controller = state.CurrentOpponent }.Rate();
 		}
 	}
 }
