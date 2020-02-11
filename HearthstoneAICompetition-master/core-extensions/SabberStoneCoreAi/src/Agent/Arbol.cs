@@ -61,6 +61,7 @@ namespace SabberStoneCoreAi.src.Agent
 		}
 		public Nodo getBestNode()
 		{
+			//end turn puede ser null si se juega una carta de escoge entre estas opciones
 			sortedNodes.Sort((x, y) => y.getAverageValue().CompareTo(x.getAverageValue()));
 			if (end_turn != null && (sortedNodes.Count == 0 || end_turn.getAverageValue() > sortedNodes[0].getAverageValue()))
 				return end_turn;
