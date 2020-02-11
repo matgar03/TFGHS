@@ -27,8 +27,7 @@ namespace SabberStoneCoreAi.src.Agent
 				var nodo = new Nodo(opt, 0.0f, this);
 				if (opt.PlayerTaskType == PlayerTaskType.END_TURN)
 				{
-					var nextState = root.Simulate(new List<PlayerTask>() { opt })[opt];
-					nodo.addValue(getStateValue(nextState));
+					nodo.addValue(getStateValue(root));
 					end_turn = nodo;
 				}
 				else
@@ -70,7 +69,7 @@ namespace SabberStoneCoreAi.src.Agent
 		}
 		private int getStateValue(POGame.POGame state)
 		{
-			return new AggroScore { Controller = state.CurrentOpponent }.Rate();
+			return new ScoreUtility { Controller = state.CurrentPlayer }.Rate();
 		}
 	}
 }

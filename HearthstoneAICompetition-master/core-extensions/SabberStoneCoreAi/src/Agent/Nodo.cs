@@ -33,15 +33,20 @@ namespace SabberStoneCoreAi.Agent
 
 		public void simulation(ResultSim resultSim)
 		{
-			System.Random r = new Random();
 			var state = resultSim.state;
-			var options = state.CurrentPlayer.Options();
-			int selectedOpt = r.Next(0, options.Count-1);
-			var task = options[selectedOpt];
-			var nextState = state.Simulate(new List<PlayerTask>() { task })[task];
-			if (task.PlayerTaskType != PlayerTaskType.END_TURN)
+			var nextState = state.Simulate(new List<PlayerTask>() { resultSim.task })[resultSim.task];
+			System.Random r = new Random();
+			if(nextState == null)
 			{
-				simulation(new ResultSim(nextState, task, getStateValue(nextState)));
+				addValue(getStateValue(state));
+				return;
+			}
+			var options = nextState.CurrentPlayer.Options();
+			int selectedOpt = r.Next(0, options.Count-1);
+			PlayerTask nextTask = options[selectedOpt];
+			if (nextTask.PlayerTaskType != PlayerTaskType.END_TURN)
+			{
+				simulation(new ResultSim(nextState, nextTask, getStateValue(nextState)));
 			}
 			else
 			{
@@ -56,7 +61,7 @@ namespace SabberStoneCoreAi.Agent
 
 		private int getStateValue(POGame.POGame state)
 		{
-			return new AggroScore { Controller = state.CurrentOpponent }.Rate();
+			return new ScoreUtility { Controller = state.CurrentPlayer}.Rate();
 		}
 	}
 
