@@ -21,6 +21,7 @@ using SabberStoneCoreAi.POGame;
 using SabberStoneCoreAi.Agent.ExampleAgents;
 using SabberStoneCoreAi.Agent;
 using SabberStoneCoreAi.Meta;
+using SabberStoneCoreAi.Competition.Agents;
 
 namespace SabberStoneCoreAi
 {
@@ -49,7 +50,7 @@ namespace SabberStoneCoreAi
 
 			Console.WriteLine("Simulate Games");
 			//gameHandler.PlayGame();
-			gameHandler.PlayGames(nr_of_games:40, addResultToGameStats:true, debug:false);
+			gameHandler.PlayGames(nr_of_games:10, addResultToGameStats:true, debug:false);
 			GameStats gameStats = gameHandler.getGameStats();
 
 			gameStats.printResults();

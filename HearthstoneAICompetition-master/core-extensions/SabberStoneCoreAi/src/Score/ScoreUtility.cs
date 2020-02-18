@@ -32,10 +32,7 @@ namespace SabberStoneCoreAi.Score
 			myRes += (int) Math.Sqrt(DeckCnt) - Controller.Hero.Fatigue;
 			opRes += (int)Math.Sqrt(OpDeckCnt) - Controller.Opponent.Hero.Fatigue;
 
-			//Estudiar Minions (se puede ampliar teniendo en cuenta las habilidades)
-
-			myRes += MinionTotAtk + MinionTotHealth;
-			opRes += OpMinionTotAtk + OpMinionTotHealth;
+			
 
 			// Ver si el oponente tiene el campo libre
 			if (OpBoardZone.Count == 0)
@@ -43,14 +40,55 @@ namespace SabberStoneCoreAi.Score
 			if (BoardZone.Count == 0)
 				opRes += 2 + Math.Min(10, Controller.BoardZone.Game.Turn);
 
+			//Estudiar Minions (se puede ampliar teniendo en cuenta las habilidades)
 
-			
+			myRes *= 3;
+			opRes *= 3;
+			myRes += getMinionValues(false);
+			opRes += getMinionValues(true);
+
 			return myRes - opRes;
 		}
 
 		public override Func<List<IPlayable>, List<int>> MulliganRule()
 		{
 			return p => p.Where(t => t.Cost > 3).Select(t => t.Id).ToList();
+		}
+		int getValueForMinion(Minion minion)
+		{
+			int value = 0;
+
+			if (!minion.IsFrozen) value += minion.Health + minion.AttackDamage * Math.Max(minion.NumAttacksThisTurn - 1, 0);
+
+			if (minion.HasTaunt) value += minion.Health;
+			if (minion.Poisonous) value += 3;
+			if (minion.HasDeathrattle) value += 3;
+			if (minion.HasInspire) value += 3;
+			if (minion.HasDivineShield)
+			{
+				value += minion.AttackDamage;
+				if (minion.HasTaunt) value += minion.Health;
+			}
+			if (minion.HasLifeSteal) value += 2* minion.AttackDamage;
+			if (minion.HasCharge) value += 3;
+			if (minion.HasStealth) value +=  minion.AttackDamage;
+			if (minion.HasBattleCry) value += 3;
+			if (minion.HasWindfury) value += minion.AttackDamage;
+
+			return value;
+		}
+
+		int getMinionValues(bool oponent)
+		{
+			int value = 0;
+			Controller cont = Controller;
+			if (oponent) cont = Controller.Opponent.Controller;
+			foreach (Minion m in cont.BoardZone)
+			{
+				value += getValueForMinion(m);
+			}
+
+			return value;
 		}
 	}
 }
