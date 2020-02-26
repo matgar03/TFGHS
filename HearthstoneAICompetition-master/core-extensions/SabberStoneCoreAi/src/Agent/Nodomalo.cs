@@ -12,13 +12,13 @@ using SabberStoneCoreAi.src.Agent;
 
 namespace SabberStoneCoreAi.Agent
 {
-	class Nodo
+	class Nodomalo
 	{
 		private PlayerTask task;
 		private float value;
 		private int visits;
-		private Arbol tree;
-		public Nodo (PlayerTask task, float initialValue, Arbol tree)
+		private Arbolmalo tree;
+		public Nodomalo (PlayerTask task, float initialValue, Arbolmalo tree)
 		{
 			this.task = task;
 			this.value = initialValue;

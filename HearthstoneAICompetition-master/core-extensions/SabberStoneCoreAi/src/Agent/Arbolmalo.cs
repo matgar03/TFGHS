@@ -7,13 +7,13 @@ using SabberStoneCoreAi.Score;
 
 namespace SabberStoneCoreAi.src.Agent
 {
-	class Arbol
+	class Arbolmalo
 	{
 		private POGame.POGame root;
-		private List<Nodo> explorableNodes = new List<Nodo>();
-		private List<Nodo> sortedNodes = new List<Nodo>();
-		private Nodo end_turn;
-		public Arbol(POGame.POGame root, List<PlayerTask> options)
+		private List<Nodomalo> explorableNodes = new List<Nodomalo>();
+		private List<Nodomalo> sortedNodes = new List<Nodomalo>();
+		private Nodomalo end_turn;
+		public Arbolmalo(POGame.POGame root, List<PlayerTask> options)
 		{
 			this.root = root;
 			initTree(options);
@@ -24,7 +24,7 @@ namespace SabberStoneCoreAi.src.Agent
 			explorableNodes.Clear();
 			sortedNodes.Clear();
 			foreach (PlayerTask opt in options){
-				var nodo = new Nodo(opt, 0.0f, this);
+				var nodo = new Nodomalo(opt, 0.0f, this);
 				if (opt.PlayerTaskType == PlayerTaskType.END_TURN)
 				{
 					nodo.addValue(getStateValue(root));
@@ -40,7 +40,7 @@ namespace SabberStoneCoreAi.src.Agent
 
 		public void Simulation(int i, bool exploting)
 		{
-			Nodo node = null;
+			Nodomalo node = null;
 			if (exploting)
 			{
 				// Estamos escogiendo uno de los 7 mejores aleatoriamente
@@ -58,7 +58,7 @@ namespace SabberStoneCoreAi.src.Agent
 			var resultsim = new ResultSim(root, node.getTask(), getStateValue(root));
 			node.simulation(resultsim);
 		}
-		public Nodo getBestNode()
+		public Nodomalo getBestNode()
 		{
 			//end turn puede ser null si se juega una carta de escoge entre estas opciones
 			sortedNodes.Sort((x, y) => y.getAverageValue().CompareTo(x.getAverageValue()));
