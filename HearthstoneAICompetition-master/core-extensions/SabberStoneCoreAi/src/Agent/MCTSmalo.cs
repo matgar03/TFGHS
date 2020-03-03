@@ -14,7 +14,7 @@ namespace SabberStoneCoreAi.Agent
 {
     class MCTSmalo : AbstractAgent
     {
-        Arbolbueno tree;
+        Arbolmalo tree;
         private const int VISITSxNODE = 100;
         private const double EXPLORATION_RATE = 0.7;
         public override void FinalizeAgent()
@@ -28,7 +28,7 @@ namespace SabberStoneCoreAi.Agent
         public override PlayerTask GetMove(SabberStoneCoreAi.POGame.POGame poGame)
         {
             var options = poGame.CurrentPlayer.Options();
-            tree = new Arbolbueno(poGame, options);
+			tree = new Arbolmalo(poGame, options);
             //el end_turn no lo vamos a visitar
             int visits = VISITSxNODE * (options.Count - 1);
             for (int i = 0; i < visits; ++i)
