@@ -35,22 +35,22 @@ namespace SabberStoneCoreAi
 			var gameConfig = new GameConfig()
 			{
 				StartPlayer = 1,
-				Player1HeroClass = CardClass.WARRIOR,
-				Player2HeroClass = CardClass.WARRIOR,
-				Player1Deck = Decks.ToyDeck,
-				Player2Deck = Decks.ToyDeck,
+				Player1HeroClass = CardClass.SHAMAN,
+				Player2HeroClass = CardClass.SHAMAN,
+				Player1Deck = Decks.MidrangeJadeShaman,
+				Player2Deck = Decks.MidrangeJadeShaman,
 				Shuffle = false,
 				Logging = false
 			};
 
 			Console.WriteLine("Setup POGameHandler");
 			AbstractAgent player1 = new MCTSbueno(); 
-			AbstractAgent player2 = new GreedyAgent();
+			AbstractAgent player2 = new MCTSmalo();
 			var gameHandler = new POGameHandler(gameConfig, player1, player2, repeatDraws:true);
 
 			Console.WriteLine("Simulate Games");
 			//gameHandler.PlayGame();
-			gameHandler.PlayGames(nr_of_games:1, addResultToGameStats:true, debug:true);
+			gameHandler.PlayGames(nr_of_games:10, addResultToGameStats:true, debug:false);
 			GameStats gameStats = gameHandler.getGameStats();
 
 			gameStats.printResults();

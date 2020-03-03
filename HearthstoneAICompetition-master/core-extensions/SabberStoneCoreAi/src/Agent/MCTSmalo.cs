@@ -15,7 +15,7 @@ namespace SabberStoneCoreAi.Agent
     class MCTSmalo : AbstractAgent
     {
         Arbolmalo tree;
-        private const int VISITSxNODE = 100;
+        private const int VISITSxNODE = 80;
         private const double EXPLORATION_RATE = 0.7;
         public override void FinalizeAgent()
         {

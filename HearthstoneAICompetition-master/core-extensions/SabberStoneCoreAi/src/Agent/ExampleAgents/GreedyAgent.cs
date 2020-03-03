@@ -33,12 +33,14 @@ namespace SabberStoneCoreAi.Agent.ExampleAgents
 		private static int Score( POGame.POGame state, int playerId )
 		{
 			var p = state.CurrentPlayer.PlayerId == playerId ? state.CurrentPlayer : state.CurrentOpponent;
-			switch ( state.CurrentPlayer.HeroClass )
+			return new ScoreUtility { Controller = p }.Rate();
+			/*switch ( state.CurrentPlayer.HeroClass )
 			{
 				case CardClass.WARRIOR: return new AggroScore { Controller = p }.Rate();
 				case CardClass.MAGE: 	return new ControlScore { Controller = p }.Rate();
 				default: 				return new MidRangeScore { Controller = p }.Rate();
 			}
+			*/
 		}
 	}
 }

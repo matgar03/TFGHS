@@ -16,10 +16,10 @@ namespace SabberStoneCoreAi.Score
 			if (HeroHp < 1)
 				return int.MinValue;
 
-			int myRes = 0, opRes=0;
+			int myRes = 0, opRes = 0;
 
 			//Salud
-			myRes = (int) (2 * Math.Sqrt(HeroHp));
+			myRes = (int)(2 * Math.Sqrt(HeroHp));
 			opRes = (int)(2 * Math.Sqrt(OpHeroHp));
 
 			//Ventaja de cartas
@@ -29,10 +29,13 @@ namespace SabberStoneCoreAi.Score
 			if (OpHandCnt > 3) opRes -= OpHandCnt - 3;
 
 			//Cartas en Mazo (igual hace falta ponerlo para que solo lo compruebe con la partida bastante avanzada)
-			myRes += (int) Math.Sqrt(DeckCnt) - Controller.Hero.Fatigue;
+			myRes += (int)Math.Sqrt(DeckCnt) - Controller.Hero.Fatigue;
 			opRes += (int)Math.Sqrt(OpDeckCnt) - Controller.Opponent.Hero.Fatigue;
 
-			
+			//Estudiar Minions (se puede ampliar teniendo en cuenta las habilidades)
+
+			myRes += MinionTotAtk + MinionTotHealth;
+			opRes += OpMinionTotAtk + OpMinionTotHealth;
 
 			// Ver si el oponente tiene el campo libre
 			if (OpBoardZone.Count == 0)
@@ -40,12 +43,7 @@ namespace SabberStoneCoreAi.Score
 			if (BoardZone.Count == 0)
 				opRes += 2 + Math.Min(10, Controller.BoardZone.Game.Turn);
 
-			//Estudiar Minions (se puede ampliar teniendo en cuenta las habilidades)
 
-			myRes *= 3;
-			opRes *= 3;
-			myRes += getMinionValues(false);
-			opRes += getMinionValues(true);
 
 			return myRes - opRes;
 		}
@@ -54,6 +52,8 @@ namespace SabberStoneCoreAi.Score
 		{
 			return p => p.Where(t => t.Cost > 3).Select(t => t.Id).ToList();
 		}
+
+
 		int getValueForMinion(Minion minion)
 		{
 			int value = 0;
@@ -69,9 +69,9 @@ namespace SabberStoneCoreAi.Score
 				value += minion.AttackDamage;
 				if (minion.HasTaunt) value += minion.Health;
 			}
-			if (minion.HasLifeSteal) value += 2* minion.AttackDamage;
+			if (minion.HasLifeSteal) value += 2 * minion.AttackDamage;
 			if (minion.HasCharge) value += 3;
-			if (minion.HasStealth) value +=  minion.AttackDamage;
+			if (minion.HasStealth) value += minion.AttackDamage;
 			if (minion.HasBattleCry) value += 3;
 			if (minion.HasWindfury) value += minion.AttackDamage;
 

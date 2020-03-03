@@ -40,6 +40,7 @@ namespace SabberStoneCoreAi.Agent
 		
 		public float simulation(ResultSim resultSim)
 		{
+
 			var state = resultSim.state;
 			var nextState = state.Simulate(new List<PlayerTask>() { resultSim.task })[resultSim.task];
 			System.Random r = new Random();
@@ -69,6 +70,12 @@ namespace SabberStoneCoreAi.Agent
 			System.Random r = new Random();
 			var options = state.CurrentPlayer.Options();
 			int selectedOpt = r.Next(0, options.Count);
+			if(options[selectedOpt].PlayerTaskType == PlayerTaskType.END_TURN)
+			{
+				float value = getStateValue(state);
+				addValue(value);
+				return value;
+			}
 			return simulation(new ResultSim(state, options[selectedOpt], getStateValue(state)));
 		}
 		public void addValue(float value)

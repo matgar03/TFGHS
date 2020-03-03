@@ -49,12 +49,17 @@ namespace SabberStoneCoreAi.src.Agent
 			sortedNodes.Sort((x, y) => y.getAverageValue().CompareTo(x.getAverageValue()));
 			Nodobueno selectedNode = sortedNodes[0];
 			//expandimos el nodo y elegimos el hijo a simular
+		
 			Nodobueno selChild = ExpandNode(selectedNode);
-			//simulamos el nodo escogido
-			float childVal = selChild.simulation();
-			//actualizar a los padres
-			selChild.BackPropagation(childVal);
+			if(selChild != null)
+			{
+				//simulamos el nodo escogido
+				float childVal = selChild.simulation();
+				//actualizar a los padres
+				selChild.BackPropagation(childVal);
+			}
 			return true;
+
 		}
 		public Nodobueno getBestNode()
 		{
@@ -63,7 +68,7 @@ namespace SabberStoneCoreAi.src.Agent
 			if (end_turn != null && (explorableNodes.Count == 0 || end_turn.getAverageValue() > explorableNodes[0].getAverageValue()))
 				return end_turn;
 			else
-				return sortedNodes[0];
+				return explorableNodes[0];
 		}
 		private Nodobueno ExpandNode(Nodobueno node)
 		{
@@ -76,6 +81,7 @@ namespace SabberStoneCoreAi.src.Agent
 				if (opt.PlayerTaskType == PlayerTaskType.END_TURN)
 				{
 					nodo.addValue(getStateValue(state));
+					
 				}
 				else
 				{
@@ -87,9 +93,12 @@ namespace SabberStoneCoreAi.src.Agent
 				}
 				
 			}
+			sortedNodes.Remove(node);
+			if (childNodes.Count == 0) return null;
+
 			System.Random r = new Random();
 			int indChild = r.Next(0, childNodes.Count);
-			sortedNodes.Remove(node);
+			
 			return childNodes[indChild];
 		}
 
