@@ -101,6 +101,15 @@ namespace SabberStoneCoreAi.Agent
 		{
 			this.state = state;
 		}
+
+		//aproximadamente raiz de 2 aunque deberíamos probar varios valores
+		//const float C = 1.414213f;
+		const float C = 1.5f;
+
+		public float ucb()
+		{
+			return (float)(getAverageValue() + C * Math.Sqrt(Math.Log(padre.getVisits())/visits));
+		}
 	}
 
 

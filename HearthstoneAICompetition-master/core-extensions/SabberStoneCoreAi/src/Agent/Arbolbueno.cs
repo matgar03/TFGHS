@@ -9,6 +9,7 @@ namespace SabberStoneCoreAi.src.Agent
 {
 	class Arbolbueno
 	{
+		
 		private POGame.POGame root;
 		private List<Nodobueno> explorableNodes = new List<Nodobueno>();
 		private List<Nodobueno> sortedNodes = new List<Nodobueno>();
@@ -21,10 +22,12 @@ namespace SabberStoneCoreAi.src.Agent
 
 		private void initTree(List<PlayerTask> options)
 		{
+			Nodobueno padreInicial = new Nodobueno(null, 0.0f, this, null);
+			padreInicial.addValue(getStateValue(root));
 			explorableNodes.Clear();
 			sortedNodes.Clear();
 			foreach (PlayerTask opt in options){
-				var nodo = new Nodobueno(opt, 0.0f, this, null);
+				var nodo = new Nodobueno(opt, 0.0f, this, padreInicial);
 				if (opt.PlayerTaskType == PlayerTaskType.END_TURN)
 				{
 					nodo.addValue(getStateValue(root));
@@ -64,8 +67,8 @@ namespace SabberStoneCoreAi.src.Agent
 		public Nodobueno getBestNode()
 		{
 			//end turn puede ser null si se juega una carta de escoge entre estas opciones
-			explorableNodes.Sort((x, y) => y.getAverageValue().CompareTo(x.getAverageValue()));
-			if (end_turn != null && (explorableNodes.Count == 0 || end_turn.getAverageValue() > explorableNodes[0].getAverageValue()))
+			explorableNodes.Sort((x, y) => y.ucb().CompareTo(x.ucb()));
+			if (end_turn != null && (explorableNodes.Count == 0 || end_turn.ucb() > explorableNodes[0].ucb()))
 				return end_turn;
 			else
 				return explorableNodes[0];
@@ -106,5 +109,6 @@ namespace SabberStoneCoreAi.src.Agent
 		{
 			return new ScoreUtility { Controller = state.CurrentPlayer }.Rate();
 		}
+
 	}
 }

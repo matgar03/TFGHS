@@ -39,13 +39,13 @@ namespace SabberStoneCoreAi
 				Player2HeroClass = CardClass.SHAMAN,
 				Player1Deck = Decks.MidrangeJadeShaman,
 				Player2Deck = Decks.MidrangeJadeShaman,
-				Shuffle = false,
+				Shuffle = true,
 				Logging = false
 			};
 
 			Console.WriteLine("Setup POGameHandler");
-			AbstractAgent player1 = new MCTSbueno(); 
-			AbstractAgent player2 = new MCTSmalo();
+			AbstractAgent player1 = new MCTSbueno();
+			AbstractAgent player2 = new GreedyAgent();
 			var gameHandler = new POGameHandler(gameConfig, player1, player2, repeatDraws:true);
 
 			Console.WriteLine("Simulate Games");

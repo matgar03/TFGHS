@@ -27,7 +27,7 @@ namespace SabberStoneCoreAi.Agent
         {
             var options = poGame.CurrentPlayer.Options();
             tree = new Arbolbueno(poGame, options);
-            int visits = 2500;
+            int visits = 1000;
             for (int i = 0; i < visits; ++i)
             {
 				if (!tree.Simulation())
