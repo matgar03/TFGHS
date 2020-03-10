@@ -15,6 +15,8 @@ namespace SabberStoneCoreAi.Agent
     class MCTSbueno : AbstractAgent
     {
         Arbolbueno tree;
+		float uctConst;
+		
         public override void FinalizeAgent()
         {
         }

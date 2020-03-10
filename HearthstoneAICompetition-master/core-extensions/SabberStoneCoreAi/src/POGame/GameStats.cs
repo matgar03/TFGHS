@@ -1,8 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Model;
+using SabberStoneCoreAi.Agent;
 
 namespace SabberStoneCoreAi.POGame
 {
@@ -75,6 +77,35 @@ namespace SabberStoneCoreAi.POGame
 				Console.WriteLine("No games played yet. Use Gamehandler.PlayGame() to add games.");
 			}
 			
+		}
+
+		public void writeResults(string filename)
+		{
+			using (System.IO.StreamWriter file = File.AppendText(filename))
+			{
+				if (nr_games > 0)
+				{
+					file.WriteLine($"{nr_games} games with {turns} turns took {(time_per_player[0] + time_per_player[1]).ToString("F4")} ms => " +
+								  $"Avg. {((time_per_player[0] + time_per_player[1]) / nr_games).ToString("F4")} per game " +
+								  $"and {((time_per_player[0] + time_per_player[1]) / (nr_games * turns)).ToString("F8")} per turn!");
+					file.WriteLine($"playerA {wins[0] * 100 / nr_games}% vs. playerB {wins[1] * 100 / nr_games}%! number of draws: {draws}");
+					file.WriteLine($"const C = {Globals.C}\n");
+					if (exceptions.Count > 0)
+					{
+						file.WriteLine($"Games lost due to exceptions: playerA - {exception_count[0]}; playerB - {exception_count[1]}");
+						file.WriteLine("Exception messages:");
+						foreach (var e in exceptions)
+						{
+							file.WriteLine($"\tGame {e.Key}: {e.Value}");
+						}
+						file.WriteLine();
+					}
+				}
+				else
+				{
+					file.WriteLine("No games played yet. Use Gamehandler.PlayGame() to add games.");
+				}
+			}
 		}
 
 		public int GamesPlayed
