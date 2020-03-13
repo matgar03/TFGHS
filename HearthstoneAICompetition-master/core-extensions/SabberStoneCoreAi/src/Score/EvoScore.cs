@@ -2,12 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using SabberStoneCore.Model.Entities;
+using SabberStoneCoreAi.Agent;
 
 namespace SabberStoneCoreAi.Score
 {
     public class EvoScore : Score
     {
-        List<double> weight { get; set; }
+		/*
+		0: vida
+		1: cartas en mano
+		2: cartas en el mazo
+		3: el oponente tiene el campo vacío
+		4: vida del minion
+		5: ataque del minion
+		---- habilidades de los minions ----
+		6: tener provocar
+		7: tener veneno
+		8: tener último aliento (algo al morir)
+		9: tener inspirar
+		10: tener escudo divino
+		11: tener robo de vida
+		12: tener cargar
+		13: tener sigilo
+		14: tener grito de batalla
+		15: tener viento furioso
+		*/
 
         public double Rate()
         {
@@ -20,20 +39,20 @@ namespace SabberStoneCoreAi.Score
             double myRes = 0, opRes = 0;
 
             //Salud
-            myRes = (weight[0] * Math.Sqrt(HeroHp));
-            opRes = (weight[0] * Math.Sqrt(OpHeroHp));
+            myRes = (Globals.WEIGHT[0] * Math.Sqrt(HeroHp));
+            opRes = (Globals.WEIGHT[0] * Math.Sqrt(OpHeroHp));
 
             //Ventaja de cartas
-            myRes += weight[1] * HandCnt;
-            if (HandCnt > 3) myRes -= HandCnt - weight[1];
-            opRes += weight[1] * OpHandCnt;
-            if (OpHandCnt > 3) opRes -= OpHandCnt - weight[1];
+            myRes += Globals.WEIGHT[1] * HandCnt;
+            if (HandCnt > 3) myRes -= HandCnt - Globals.WEIGHT[1];
+            opRes += Globals.WEIGHT[1] * OpHandCnt;
+            if (OpHandCnt > 3) opRes -= OpHandCnt - Globals.WEIGHT[1];
 
             //Cartas en Mazo (igual hace falta ponerlo para que solo lo compruebe con la partida bastante avanzada)
             if (Controller.BoardZone.Game.Turn > 10)
             {
-                myRes += weight[2] * (Math.Sqrt(DeckCnt) - Controller.Hero.Fatigue);
-                opRes += weight[2] * (Math.Sqrt(OpDeckCnt) - Controller.Opponent.Hero.Fatigue);
+                myRes += Globals.WEIGHT[2] * (Math.Sqrt(DeckCnt) - Controller.Hero.Fatigue);
+                opRes += Globals.WEIGHT[2] * (Math.Sqrt(OpDeckCnt) - Controller.Opponent.Hero.Fatigue);
             }
             //Estudiar Minions (se puede ampliar teniendo en cuenta las habilidades)
 
@@ -42,9 +61,9 @@ namespace SabberStoneCoreAi.Score
 
             // Ver si el oponente tiene el campo libre
             if (OpBoardZone.Count == 0)
-                myRes += weight[3] * Math.Min(10, Controller.BoardZone.Game.Turn);
+                myRes += Globals.WEIGHT[3] * Math.Min(10, Controller.BoardZone.Game.Turn);
             if (BoardZone.Count == 0)
-                opRes += weight[3] * Math.Min(10, Controller.BoardZone.Game.Turn);
+                opRes += Globals.WEIGHT[3] * Math.Min(10, Controller.BoardZone.Game.Turn);
 
 
 
@@ -60,19 +79,19 @@ namespace SabberStoneCoreAi.Score
         double getValueForMinion(Minion minion)
         {
             double value = 0;
-            value += weight[4] * minion.Health;
-            if (!minion.IsFrozen) value += weight[5] * minion.AttackDamage;
+            value += Globals.WEIGHT[4] * minion.Health;
+            if (!minion.IsFrozen) value += Globals.WEIGHT[5] * minion.AttackDamage;
 
-            if (minion.HasTaunt) value += weight[6] * minion.Health;
-            if (minion.Poisonous) value += weight[7];
-            if (minion.HasDeathrattle) value += weight[8];
-            if (minion.HasInspire) value += weight[9];
-            if (minion.HasDivineShield) value += weight[10];
-            if (minion.HasLifeSteal) value += weight[11] * minion.AttackDamage;
-            if (minion.HasCharge) value += weight[12] * minion.AttackDamage;
-            if (minion.HasStealth) value += weight[13] * minion.AttackDamage;
-            if (minion.HasBattleCry) value += weight[14];
-            if (minion.HasWindfury) value += weight[15] * minion.AttackDamage;
+            if (minion.HasTaunt) value += Globals.WEIGHT[6] * minion.Health;
+            if (minion.Poisonous) value += Globals.WEIGHT[7];
+            if (minion.HasDeathrattle) value += Globals.WEIGHT[8];
+            if (minion.HasInspire) value += Globals.WEIGHT[9];
+            if (minion.HasDivineShield) value += Globals.WEIGHT[10];
+            if (minion.HasLifeSteal) value += Globals.WEIGHT[11] * minion.AttackDamage;
+            if (minion.HasCharge) value += Globals.WEIGHT[12] * minion.AttackDamage;
+            if (minion.HasStealth) value += Globals.WEIGHT[13] * minion.AttackDamage;
+            if (minion.HasBattleCry) value += Globals.WEIGHT[14];
+            if (minion.HasWindfury) value += Globals.WEIGHT[15] * minion.AttackDamage;
 
             return value;
         }

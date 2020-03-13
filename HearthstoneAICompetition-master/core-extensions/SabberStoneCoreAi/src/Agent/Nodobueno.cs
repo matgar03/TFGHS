@@ -115,6 +115,8 @@ namespace SabberStoneCoreAi.Agent
 	public static class Globals
 	{
 		public static float C = 1.8f;
+		public static double[] WEIGHT = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+		public static Random r = new Random();
 	}
 
 }
