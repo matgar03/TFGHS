@@ -114,7 +114,7 @@ namespace SabberStoneCoreAi.Agent
 
 	public static class Globals
 	{
-		public static float C = 1.5f;
+		public static float C = 1.8f;
 	}
 
 }

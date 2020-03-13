@@ -34,7 +34,7 @@ namespace SabberStoneCoreAi
 			for(int i = 0; i < 21; ++i)
 			{
 				Globals.C += 0.05f;
-				Console.WriteLine($"Iteración{i}");
+				Console.WriteLine($"Iteración {i}");
 				Console.WriteLine("Setup gameConfig");
 				var gameConfig = new GameConfig()
 				{
