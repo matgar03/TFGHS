@@ -8,9 +8,9 @@ namespace SabberStoneCoreAi.src.Evolutivo
 	class Individuo
 	{
 
-		public int indScore { get; set; } = 0;
+		public float indScore { get; set; } = 0;
 
-		const double mutProp = 0.275;
+		const double mutProp = 0.1;
 		double vida;
 		double numMano;
 		double numDeck;

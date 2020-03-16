@@ -28,9 +28,9 @@ namespace SabberStoneCoreAi
     internal class Program
     {
 
-        private static void Main()
+       /* private static void Main()
 
-<<<<<<< HEAD
+
         {
             Globals.C = 0.95f;
             for (int i = 0; i < 21; ++i)
@@ -48,38 +48,23 @@ namespace SabberStoneCoreAi
                     Shuffle = true,
                     Logging = false
                 };
-=======
-		private static void Main()
-
-		{
-			Console.WriteLine("Setup gameConfig");
->>>>>>> 1e2fa1f4df488c8fa3602767d3904ed9f5687862
 
                 Console.WriteLine("Setup POGameHandler");
-                AbstractAgent player1 = new MCTSbueno();
+                AbstractAgent player1 = new GreedyAgent();
                 AbstractAgent player2 = new GreedyAgent();
                 var gameHandler = new POGameHandler(gameConfig, player1, player2, repeatDraws: true);
 
                 Console.WriteLine("Simulate Games");
                 //gameHandler.PlayGame();
-                gameHandler.PlayGames(nr_of_games: 20, addResultToGameStats: true, debug: false);
+                gameHandler.PlayGames(nr_of_games: 100, addResultToGameStats: true, debug: false);
                 GameStats gameStats = gameHandler.getGameStats();
 
                 gameStats.printResults();
-                gameStats.writeResults("resultados.txt");
+                //gameStats.writeResults("resultados.txt");
 
-<<<<<<< HEAD
             }
 
-            Console.WriteLine("Test successful");
-            Console.ReadLine();
-        }
+
+        }*/
     }
-=======
-			gameStats.printResults();
-			Console.WriteLine("Test successful");
-			Console.ReadLine();
-		}
-	}
->>>>>>> 1e2fa1f4df488c8fa3602767d3904ed9f5687862
 }

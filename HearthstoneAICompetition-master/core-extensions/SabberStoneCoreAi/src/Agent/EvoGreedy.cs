@@ -31,10 +31,10 @@ namespace SabberStoneCoreAi.Agent.ExampleAgents
         }
 
         // Calculate different scores based on our hero's class
-        private static int Score(POGame.POGame state, int playerId)
+        private static double Score(POGame.POGame state, int playerId)
         {
             var p = state.CurrentPlayer.PlayerId == playerId ? state.CurrentPlayer : state.CurrentOpponent;
-            return new EvoScore { Controller = p }.Rate();
+            return new EvoScore{ Controller = p }.Rate();
             /*switch ( state.CurrentPlayer.HeroClass )
             {
                 case CardClass.WARRIOR: return new AggroScore { Controller = p }.Rate();
