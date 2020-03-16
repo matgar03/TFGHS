@@ -30,6 +30,7 @@ namespace SabberStoneCoreAi
 
         private static void Main()
 
+<<<<<<< HEAD
         {
             Globals.C = 0.95f;
             for (int i = 0; i < 21; ++i)
@@ -47,6 +48,12 @@ namespace SabberStoneCoreAi
                     Shuffle = true,
                     Logging = false
                 };
+=======
+		private static void Main()
+
+		{
+			Console.WriteLine("Setup gameConfig");
+>>>>>>> 1e2fa1f4df488c8fa3602767d3904ed9f5687862
 
                 Console.WriteLine("Setup POGameHandler");
                 AbstractAgent player1 = new MCTSbueno();
@@ -61,10 +68,18 @@ namespace SabberStoneCoreAi
                 gameStats.printResults();
                 gameStats.writeResults("resultados.txt");
 
+<<<<<<< HEAD
             }
 
             Console.WriteLine("Test successful");
             Console.ReadLine();
         }
     }
+=======
+			gameStats.printResults();
+			Console.WriteLine("Test successful");
+			Console.ReadLine();
+		}
+	}
+>>>>>>> 1e2fa1f4df488c8fa3602767d3904ed9f5687862
 }

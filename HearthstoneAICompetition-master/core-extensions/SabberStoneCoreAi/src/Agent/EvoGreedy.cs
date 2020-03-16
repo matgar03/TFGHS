@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Tasks;
@@ -34,7 +34,7 @@ namespace SabberStoneCoreAi.Agent.ExampleAgents
         private static int Score(POGame.POGame state, int playerId)
         {
             var p = state.CurrentPlayer.PlayerId == playerId ? state.CurrentPlayer : state.CurrentOpponent;
-            return new EvoScore { Controller = p }{ weight = this.weight }.Rate();
+            return new EvoScore { Controller = p }.Rate();
             /*switch ( state.CurrentPlayer.HeroClass )
             {
                 case CardClass.WARRIOR: return new AggroScore { Controller = p }.Rate();
