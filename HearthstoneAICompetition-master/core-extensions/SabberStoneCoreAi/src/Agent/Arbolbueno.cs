@@ -49,7 +49,7 @@ namespace SabberStoneCoreAi.src.Agent
 			if (sortedNodes.Count == 0)
 				return false;
 			//seleccionamos el nodo a expandir (el mejor valor medio)
-			sortedNodes.Sort((x, y) => y.getAverageValue().CompareTo(x.getAverageValue()));
+			sortedNodes.Sort((x, y) => y.ucb().CompareTo(x.ucb()));
 			Nodobueno selectedNode = sortedNodes[0];
 			//expandimos el nodo y elegimos el hijo a simular
 		
