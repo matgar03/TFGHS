@@ -22,18 +22,36 @@ namespace SabberStoneCoreAi.src.Agent
 			
 		}
 
+		//hay que comprobar si el seleccionado o el expandido son hojas para simplemente evaluar
 		public override PlayerTask GetMove(POGame.POGame poGame)
 		{
-			root = new Nodo2(poGame, null, null);
+			root = new Nodo2(poGame);
+			int result;
 			for (int i = 0; i < nsimulations; ++i)
 			{
 				Nodo2 selNode = Selection(root);
-				//el nodo devuelto debería ser expandible
-				Nodo2 expNode = selNode.expand();
-				int result = Nodo2.Simulate(expNode.getState());
-				Nodo2.BackPropagation(expNode, result);
+				//la raiz tiene null la task por eso lo comprobamos, como siempre tiene hijos nunca debería entrar en el if
+				if (selNode != root && selNode.getTask().PlayerTaskType == PlayerTaskType.END_TURN)
+				{
+					result = Nodo2.GetStateValue(selNode.getState());
+					Nodo2.BackPropagation(selNode, result);
+				}
+				else
+				{
+					Nodo2 expNode = selNode.expand();
+					if (expNode.getTask().PlayerTaskType == PlayerTaskType.END_TURN)
+					{
+						result = Nodo2.GetStateValue(expNode.getState());
+					}
+					else
+					{
+						result = Nodo2.Simulate(expNode.getState());
+					}
+					Nodo2.BackPropagation(expNode, result);
+				}
+				
 			}
-			return null;
+			return root.bestChild().getTask();
 		}
 
 		public override void InitializeAgent()
@@ -49,10 +67,12 @@ namespace SabberStoneCoreAi.src.Agent
 		private Nodo2 Selection(Nodo2 node)
 		{
 			//si no han sido expandidos todos sus hijos este es el nodo seleccionado
-			if (!node.isExpanded())
+			//también puede llegar a darse el caso de llegar a una hoja del árbol, en ese caso, devolvemos ese nodo
+			//y lo tratamos fuera
+			if (!node.isExpanded() || (node != root && node.getTask().PlayerTaskType == PlayerTaskType.END_TURN))
 				return node;
 			//si han sido expandidos entonces seleccionamos el mejor hijo y delegamos la selección a él
-			else
+			else 
 			{
 				return Selection(node.bestChild());
 			}

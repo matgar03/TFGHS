@@ -107,7 +107,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
 				pob[i].indScore = fitness(pob[i]);
 			}
 		}
-		private static void Main()
+		/*private static void Main()
 		{
 			init();
 			for (int i = 0; i < num_gen; ++i)
@@ -135,6 +135,6 @@ namespace SabberStoneCoreAi.src.Evolutivo
 			{
 				Console.Write(stats[i]);
 			}
-		}
+		}*/
 	}
 }

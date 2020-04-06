@@ -22,49 +22,72 @@ using SabberStoneCoreAi.Agent.ExampleAgents;
 using SabberStoneCoreAi.Agent;
 using SabberStoneCoreAi.Meta;
 using SabberStoneCoreAi.Competition.Agents;
+using SabberStoneCoreAi.src.Agent;
 
 namespace SabberStoneCoreAi
 {
     internal class Program
     {
 
-       /* private static void Main()
+		/*private static void Main()
+		 {
+			 Globals.C = 0.95f;
+			 for (int i = 0; i < 21; ++i)
+			 {
+				 Globals.C += 0.05f;
+				 Console.WriteLine($"Iteración {i}");
+				 Console.WriteLine("Setup gameConfig");
+				 var gameConfig = new GameConfig()
+				 {
+					 StartPlayer = 1,
+					 Player1HeroClass = CardClass.SHAMAN,
+					 Player2HeroClass = CardClass.SHAMAN,
+					 Player1Deck = Decks.MidrangeJadeShaman,
+					 Player2Deck = Decks.MidrangeJadeShaman,
+					 Shuffle = true,
+					 Logging = false
+				 };
 
+				 Console.WriteLine("Setup POGameHandler");
+				 AbstractAgent player1 = new GreedyAgent();
+				 AbstractAgent player2 = new GreedyAgent();
+				 var gameHandler = new POGameHandler(gameConfig, player1, player2, repeatDraws: true);
 
-        {
-            Globals.C = 0.95f;
-            for (int i = 0; i < 21; ++i)
-            {
-                Globals.C += 0.05f;
-                Console.WriteLine($"Iteración{i}");
-                Console.WriteLine("Setup gameConfig");
-                var gameConfig = new GameConfig()
-                {
-                    StartPlayer = 1,
-                    Player1HeroClass = CardClass.SHAMAN,
-                    Player2HeroClass = CardClass.SHAMAN,
-                    Player1Deck = Decks.MidrangeJadeShaman,
-                    Player2Deck = Decks.MidrangeJadeShaman,
-                    Shuffle = true,
-                    Logging = false
-                };
+				 Console.WriteLine("Simulate Games");
+				 //gameHandler.PlayGame();
+				 gameHandler.PlayGames(nr_of_games: 10, addResultToGameStats: true, debug: false);
+				 GameStats gameStats = gameHandler.getGameStats();
 
-                Console.WriteLine("Setup POGameHandler");
-                AbstractAgent player1 = new GreedyAgent();
-                AbstractAgent player2 = new GreedyAgent();
-                var gameHandler = new POGameHandler(gameConfig, player1, player2, repeatDraws: true);
+				 gameStats.printResults();
+				 //gameStats.writeResults("resultados.txt");
 
-                Console.WriteLine("Simulate Games");
-                //gameHandler.PlayGame();
-                gameHandler.PlayGames(nr_of_games: 100, addResultToGameStats: true, debug: false);
-                GameStats gameStats = gameHandler.getGameStats();
+			 }
 
-                gameStats.printResults();
-                //gameStats.writeResults("resultados.txt");
+			 // esto era para probar el nuevo MCTS
+			 Console.WriteLine("Setup gameConfig");
+			 var gameConfig = new GameConfig()
+			 {
+				 StartPlayer = 1,
+				 Player1HeroClass = CardClass.SHAMAN,
+				 Player2HeroClass = CardClass.SHAMAN,
+				 Player1Deck = Decks.MidrangeJadeShaman,
+				 Player2Deck = Decks.MidrangeJadeShaman,
+				 Shuffle = true,
+				 Logging = false
+			 };
 
-            }
+			 Console.WriteLine("Setup POGameHandler");
+			 AbstractAgent player1 = new MCTS2();
+			 AbstractAgent player2 = new GreedyAgent();
+			 var gameHandler = new POGameHandler(gameConfig, player1, player2, repeatDraws: true);
 
+			 Console.WriteLine("Simulate Games");
+			 //gameHandler.PlayGame();
+			 gameHandler.PlayGames(nr_of_games: 20, addResultToGameStats: true, debug: false);
+			 GameStats gameStats = gameHandler.getGameStats();
 
-        }*/
-    }
+			 gameStats.printResults();
+			 
+	*/
+	}
 }

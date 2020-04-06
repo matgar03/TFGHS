@@ -26,11 +26,21 @@ namespace SabberStoneCoreAi.src.Agent
 		public float getAverageValue() { return value / visits; }
 		public float getValue() { return value; }
 		public int getVisits() { return visits; }
+
+		public Nodo2(POGame.POGame state)
+		{
+			this.state = state;
+			this.padre = null;
+			this.task = null;
+			this.hijos = new List<Nodo2>();
+			posiblesHijos = state.CurrentPlayer.Options();
+		}
 		public Nodo2(POGame.POGame state, Nodo2 padre, PlayerTask task)
 		{
 			this.state = state;
 			this.padre = padre;
 			this.task = task;
+			this.hijos = new List<Nodo2>();
 			//hay que hacer la distinción para no pasar al turno del otro jugador
 			if (task.PlayerTaskType != PlayerTaskType.END_TURN)
 				posiblesHijos = state.CurrentPlayer.Options();
@@ -41,7 +51,7 @@ namespace SabberStoneCoreAi.src.Agent
 		{
 			return posiblesHijos.Count == 0;
 		}
-
+		//esta función siempre es llamada desde un nodo no hoja
 		public Nodo2 expand()
 		{
 			//seleccionamos aleatoriamente que hijo expandir
@@ -70,11 +80,13 @@ namespace SabberStoneCoreAi.src.Agent
 			++visits;
 			this.value += value;
 		}
-		private static int GetStateValue(POGame.POGame state)
+		public static int GetStateValue(POGame.POGame state)
 		{
 			//utilizamos al oponente porque evaluamos después de pasar turno
 			return new ScoreUtility { Controller = state.CurrentOpponent }.Rate();
 		}
+
+		//igual que en el otro MCTS
 		public static int Simulate(POGame.POGame state)
 		{
 			List<PlayerTask> options = state.CurrentPlayer.Options();
@@ -88,6 +100,7 @@ namespace SabberStoneCoreAi.src.Agent
 			else return Simulate(nextState);
 		}
 
+		//igual que en el otro MCTS
 		public static void BackPropagation(Nodo2 node, int result)
 		{
 			node.addValue(result);
