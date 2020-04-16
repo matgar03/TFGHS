@@ -11,6 +11,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
 		public float indScore { get; set; } = 0;
 
 		const double mutProp = 0.1;
+		const double ini_mut = 0.2; 
 		double vida;
 		double numMano;
 		double numDeck;
@@ -30,6 +31,30 @@ namespace SabberStoneCoreAi.src.Evolutivo
 		double m_battlecry;
 		double m_windFury;
 
+
+		//individuo dado una lista de pesos
+
+		public Individuo(List<double> pesos)
+		{
+			vida = pesos[0];
+			numMano = pesos[1];
+			numDeck = pesos[2];
+			clearOpBoard = pesos[3];
+
+			minionLife = pesos[4];
+			minionAtq = pesos[5];
+
+			m_prov = pesos[6];
+			m_ven = pesos[7];
+			m_ultAli = pesos[8];
+			m_insp = pesos[9];
+			m_escDiv = pesos[10];
+			m_lifesteal = pesos[11];
+			m_cargar = pesos[12];
+			m_stealth = pesos[13];
+			m_battlecry = pesos[14];
+			m_windFury = pesos[15];
+		}
 		//individuo aleatorio
 		public Individuo()
 		{
@@ -80,24 +105,26 @@ namespace SabberStoneCoreAi.src.Evolutivo
 		//individuo mutado
 		public Individuo(Individuo ind)
 		{
-			vida = Globals.r.NextDouble() > mutProp ? ind.vida : Globals.r.NextDouble();
-			numMano = Globals.r.NextDouble() > mutProp ? ind.numMano : Globals.r.NextDouble();
-			numDeck = Globals.r.NextDouble() > mutProp ? ind.numDeck : Globals.r.NextDouble();
-			clearOpBoard = Globals.r.NextDouble() > mutProp ? ind.clearOpBoard : Globals.r.NextDouble();
+			bool no_cambio = false;
+			if (Globals.r.NextDouble() > ini_mut) no_cambio = true; ;
+			vida = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.vida : Globals.r.NextDouble();
+			numMano = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.numMano : Globals.r.NextDouble();
+			numDeck = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.numDeck : Globals.r.NextDouble();
+			clearOpBoard = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.clearOpBoard : Globals.r.NextDouble();
 
-			minionLife = Globals.r.NextDouble() > mutProp ? ind.minionLife : Globals.r.NextDouble();
-			minionAtq = Globals.r.NextDouble() > mutProp ? ind.minionAtq : Globals.r.NextDouble();
+			minionLife = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.minionLife : Globals.r.NextDouble();
+			minionAtq = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.minionAtq : Globals.r.NextDouble();
 
-			m_prov = Globals.r.NextDouble() > mutProp ? ind.m_prov : Globals.r.NextDouble();
-			m_ven = Globals.r.NextDouble() > mutProp ? ind.m_ven : Globals.r.NextDouble();
-			m_ultAli = Globals.r.NextDouble() > mutProp ? ind.m_ultAli : Globals.r.NextDouble();
-			m_insp = Globals.r.NextDouble() > mutProp ? ind.m_insp : Globals.r.NextDouble();
-			m_escDiv = Globals.r.NextDouble() > mutProp ? ind.m_escDiv : Globals.r.NextDouble();
-			m_lifesteal = Globals.r.NextDouble() > mutProp ? ind.m_lifesteal : Globals.r.NextDouble();
-			m_cargar = Globals.r.NextDouble() > mutProp ? ind.m_cargar : Globals.r.NextDouble();
-			m_stealth = Globals.r.NextDouble() > mutProp ? ind.m_stealth : Globals.r.NextDouble();
-			m_battlecry = Globals.r.NextDouble() > mutProp ? ind.m_battlecry : Globals.r.NextDouble();
-			m_windFury = Globals.r.NextDouble() > mutProp ? ind.m_windFury : Globals.r.NextDouble();
+			m_prov = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.m_prov : Globals.r.NextDouble();
+			m_ven = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.m_ven : Globals.r.NextDouble();
+			m_ultAli = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.m_ultAli : Globals.r.NextDouble();
+			m_insp = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.m_insp : Globals.r.NextDouble();
+			m_escDiv = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.m_escDiv : Globals.r.NextDouble();
+			m_lifesteal = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.m_lifesteal : Globals.r.NextDouble();
+			m_cargar = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.m_cargar : Globals.r.NextDouble();
+			m_stealth = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.m_stealth : Globals.r.NextDouble();
+			m_battlecry = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.m_battlecry : Globals.r.NextDouble();
+			m_windFury = (Globals.r.NextDouble() > mutProp || no_cambio) ? ind.m_windFury : Globals.r.NextDouble();
 		}
 
 		public double[] getAttributes()

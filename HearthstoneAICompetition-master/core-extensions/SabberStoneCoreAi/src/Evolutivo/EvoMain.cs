@@ -7,16 +7,17 @@ using SabberStoneCoreAi.POGame;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace SabberStoneCoreAi.src.Evolutivo
 {
 	class EvoMain
 	{
-		private static int numPartidas =20 ;
-		private static int popSize = 30;
+		private static int numPartidas = 100 ;
+		private static int popSize = 50;
 		private static List<Individuo> population;
 		private static List<float> scores;
-		private static int num_gen = 15;
+		private static int num_gen = 2;
 		static float fitness(Individuo bot)
 		{
 			 var gameConfig = new GameConfig()
@@ -49,6 +50,41 @@ namespace SabberStoneCoreAi.src.Evolutivo
 			scores = new List<float>();
 			//Creacion de la poblacion inicial (random)
 			for (int i = 0; i < popSize; ++i)
+			{
+				population.Add(new Individuo());
+			}
+		}
+
+		static void save_Population()
+		{
+			StreamWriter sr = File.CreateText("save.txt");
+			for(int i = 0; i < popSize; ++i)
+			{
+				writeResul(sr, i);
+			}
+		}
+
+		static void load_Population()
+		{
+			population = new List<Individuo>();
+			scores = new List<float>();
+			string[] lines = File.ReadAllLines("save.txt");
+			int cont = 0;
+			List<double> pesos = new List<double>();
+			foreach (string line in lines)
+			{
+				if (cont == 16)
+				{
+					cont = 0;
+					population.Add(new Individuo(pesos));
+					pesos = new List<double>();
+				}
+				pesos.Add(Convert.ToDouble(line));
+				++cont;
+			}
+			population.Add(new Individuo(pesos));
+			pesos = new List<double>();
+			for (int i = population.Count; i < popSize; ++i)
 			{
 				population.Add(new Individuo());
 			}
@@ -107,12 +143,23 @@ namespace SabberStoneCoreAi.src.Evolutivo
 				pob[i].indScore = fitness(pob[i]);
 			}
 		}
-		/*private static void Main()
+		static void writeResul(StreamWriter sr, int index)
 		{
-			init();
+			double[] stats = population[index].getAttributes();
+			for (int i = 0; i < stats.Length; ++i)
+			{
+				sr.WriteLine(stats[i]);
+			}
+			sr.Flush();
+		}
+		private static void Main()
+		{
+			load_Population();
+			simulatePop();
+			StreamWriter er = File.CreateText("evol.txt");
 			for (int i = 0; i < num_gen; ++i)
 			{
-				simulatePop();
+				
 				List<Individuo> new_pop = new List<Individuo>();
 				for (int k=0; k< popSize; ++k)
 				{
@@ -127,14 +174,16 @@ namespace SabberStoneCoreAi.src.Evolutivo
 				sort_pop.Sort((x, y) => y.indScore.CompareTo(x.indScore));
 				sort_pop.RemoveRange(popSize, popSize);
 				population = sort_pop;
-				Console.WriteLine($"Generacion: {i}");
+				er.Write($"Generacion: {i+1} ");
+				er.WriteLine(population[0].indScore);
+				er.Flush();
 			}
-			Console.WriteLine(population[0].indScore);
-			double[] stats = population[0].getAttributes();
-			for(int i = 0; i < stats.Length; ++i)
-			{
-				Console.Write(stats[i]);
-			}
-		}*/
+			save_Population();
+			
+			
+
+			
+			
+		}
 	}
 }
