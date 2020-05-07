@@ -1,4 +1,4 @@
-using SabberStoneCore.Config;
+﻿using SabberStoneCore.Config;
 using SabberStoneCore.Enums;
 using SabberStoneCoreAi.Agent;
 using SabberStoneCoreAi.Agent.ExampleAgents;
@@ -14,18 +14,19 @@ namespace SabberStoneCoreAi.src.Evolutivo
     static class Cruce
     {
         const int NUMERO_VAR = 16;
-        public static (Individuo, Individuo) cruceCorte(Individuo parent1, Individuo parent2, int numCruces)
+        public static (Individuo, Individuo) corte(Individuo parent1, Individuo parent2, int numCruces)
         {
             Individuo h1, h2;
             if (numCruces > NUMERO_VAR) numCruces = NUMERO_VAR;
             bool[] cruzar = new bool[16]; //El valor por defecto es false
-            for (int i = 0; i < NUMERO_VAR; ++i)
+            for (int i = 0; i < numCruces; ++i)
             {
                 int ind;
                 do
                 {
                     ind = Globals.r.Next(NUMERO_VAR);
                 } while (cruzar[ind]);
+				cruzar[ind] = true;
             }
             double[] uno = parent1.getAttributes();
             double[] otro = parent2.getAttributes();
@@ -36,13 +37,13 @@ namespace SabberStoneCoreAi.src.Evolutivo
             {
                 if (!cambio)
                 {
-                    list_h1[i] = uno[i];
-                    list_h2[i] = otro[i];
+                    list_h1.Add(uno[i]);
+                    list_h2.Add(otro[i]);
                 }
                 else
                 {
-                    list_h1[i] = otro[i];
-                    list_h2[i] = uno[i];
+                    list_h1.Add(otro[i]);
+                    list_h2.Add(uno[i]);
                 }
                 cambio ^= cruzar[i];
 
@@ -52,7 +53,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
             return (h1, h2);
         }
 
-        public static (Individuo, Individuo) cruceUniforme(Individuo parent1, Individuo parent2)
+        public static (Individuo, Individuo) uniforme(Individuo parent1, Individuo parent2)
         {
             Individuo h1, h2;
 
@@ -65,13 +66,13 @@ namespace SabberStoneCoreAi.src.Evolutivo
                 int cual = Globals.r.Next(2);
                 if (cual == 0)
                 {
-                    list_h1[i] = uno[i];
-                    list_h2[i] = otro[i];
+                    list_h1.Add(uno[i]);
+                    list_h2.Add(otro[i]);
                 }
                 else
                 {
-                    list_h1[i] = otro[i];
-                    list_h2[i] = uno[i];
+                    list_h1.Add(otro[i]);
+                    list_h2.Add(uno[i]);
                 }
             }
             h1 = new Individuo(list_h1);
@@ -79,7 +80,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
             return (h1, h2);
         }
 
-        public static (Individuo, Individuo) cruceCombinacion(Individuo parent1, Individuo parent2)
+        public static (Individuo, Individuo) combinacion(Individuo parent1, Individuo parent2)
         {
             Individuo h1, h2;
 
@@ -90,8 +91,8 @@ namespace SabberStoneCoreAi.src.Evolutivo
             for (int i = 0; i < NUMERO_VAR; ++i)
             {
                 double par = Globals.r.NextDouble();
-                list_h1[i] = par * uno[i] + (1 - par) * otro[i];
-                list_h2[i] = (1 - par) * uno[i] + par * otro[i];
+                list_h1.Add(par * uno[i] + (1 - par) * otro[i]);
+                list_h2.Add((1 - par) * uno[i] + par * otro[i]);
 
             }
             h1 = new Individuo(list_h1);
