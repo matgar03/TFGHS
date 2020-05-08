@@ -25,6 +25,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
                 if (cambio <= prob_mut)
                 {
                     double variacion = (Globals.r.NextDouble() - 0.5) / 5;
+                    double nuevo = Math.Clamp(punt[i] + variacion, 0, 1);
                     res_list.Add(punt[i] + variacion);
                 }
                 else res_list.Add(punt[i]);

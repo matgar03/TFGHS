@@ -13,7 +13,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
     class TestMain
     {
 
-       private static void Main()
+        private static void Main()
         {
             Individuo p1 = new Individuo();
             Individuo p2 = new Individuo();
@@ -26,6 +26,8 @@ namespace SabberStoneCoreAi.src.Evolutivo
             Cruce.uniforme(p1, p2);
             //Probar el cruce combinacion
             Cruce.combinacion(p1, p2);
+            Mutacion.totalAcotada(p1, 0.5);
+            Mutacion.aleatoriaNoCota(p1);
         }
     }
 }
