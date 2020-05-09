@@ -163,8 +163,8 @@ namespace SabberStoneCoreAi.src.Evolutivo
         {
             load_Population();
             population.Sort(((x, y) => y.indScore.CompareTo(x.indScore)));
-            StreamWriter er = File.CreateText("evol_1.txt");
-            StreamWriter bog = File.CreateText("bestofGen_1.txt");
+            StreamWriter er = File.CreateText("evol_0.txt");
+            StreamWriter bog = File.CreateText("bestofGen_0.txt");
 
             for (int i = 0; i < num_gen; ++i)
             {
