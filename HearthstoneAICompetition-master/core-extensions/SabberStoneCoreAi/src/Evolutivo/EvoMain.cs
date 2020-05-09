@@ -13,14 +13,18 @@ namespace SabberStoneCoreAi.src.Evolutivo
 {
     class EvoMain
     {
-        private static bool cambio = false; //si se cambia el número de partidas el score guardado no es válido y hay que volver a calcularlo
-        private static int numPartidas = 100;
-        private static int popSize = 200;
+        private static bool cambio = true; //si se cambia el número de partidas el score guardado no es válido y hay que volver a calcularlo
+        private static int numPartidas = 1;
+        private static int popSize = 10;
         private static List<Individuo> population;
         private static List<float> scores;
         private static int num_gen = 2;
+        private static int num_Padres = 3;
+        private static int num_hijos = 4;
+        private static int num_al = 3;
+        private static double Mut_prop = 0.2;
 
-        static float fitness(Individuo bot)
+        private static float fitness(Individuo bot)
         {
             var gameConfig = new GameConfig()
             {
@@ -46,18 +50,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
             return sol;
         }
 
-        static void init()
-        {
-            population = new List<Individuo>();
-            scores = new List<float>();
-            //Creacion de la poblacion inicial (random)
-            for (int i = 0; i < popSize; ++i)
-            {
-                population.Add(new Individuo());
-            }
-        }
-
-        static void save_Population()
+        private static void save_Population()
         {
             StreamWriter sr = File.CreateText("save.txt");
             for (int i = 0; i < popSize; ++i)
@@ -66,28 +59,32 @@ namespace SabberStoneCoreAi.src.Evolutivo
             }
         }
 
-        static void load_Population()
+        private static void load_Population()
         {
             population = new List<Individuo>();
-            string[] lines = File.ReadAllLines("save.txt");
-            int cont = 0;
-            List<double> pesos = new List<double>();
-            foreach (string line in lines)
+            string fileName = "save.txt";
+            if (File.Exists(fileName))
             {
-                if (cont == 16)
+                string[] lines = File.ReadAllLines(fileName);
+                int cont = 0;
+                List<double> pesos = new List<double>();
+                foreach (string line in lines)
                 {
-                    cont = 0;
-                    population.Add(new Individuo(pesos));
-                    pesos = new List<double>();
-                    if (!cambio)
-                        population[population.Count - 1].indScore = float.Parse(line);
+                    if (cont == 16)
+                    {
+                        cont = 0;
+                        population.Add(new Individuo(pesos));
+                        pesos = new List<double>();
+                        if (!cambio)
+                            population[population.Count - 1].indScore = float.Parse(line);
+                        else
+                            population[population.Count - 1].indScore = fitness(population[population.Count - 1]);
+                    }
                     else
-                        population[population.Count - 1].indScore = fitness(population[population.Count - 1]);
-                }
-                else
-                {
-                    pesos.Add(Convert.ToDouble(line));
-                    ++cont;
+                    {
+                        pesos.Add(Convert.ToDouble(line));
+                        ++cont;
+                    }
                 }
             }
             for (int i = population.Count; i < popSize; ++i)
@@ -97,7 +94,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
             }
         }
 
-        static void normalizeScores()
+        private static void normalizeScores()
         {
             scores = new List<float>();
             for (int i = 0; i < popSize; ++i)
@@ -116,7 +113,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
             }
         }
         //El padre y madre seleccionados pueden ser los mismos
-        static Tuple<Individuo, Individuo> selection()
+        private static (Individuo, Individuo) selection()
         {
             double r1 = Globals.r.NextDouble();
             double r2 = Globals.r.NextDouble();
@@ -142,17 +139,17 @@ namespace SabberStoneCoreAi.src.Evolutivo
                 }
 
             }
-            return new Tuple<Individuo, Individuo>(padre, madre);
+            return (padre, madre);
         }
 
-        static void simulate(List<Individuo> pob)
+        private static void simulate(List<Individuo> pob)
         {
-            for (int i = 0; i < popSize; ++i)
+            for (int i = 0; i < pob.Count; ++i)
             {
                 pob[i].indScore = fitness(pob[i]);
             }
         }
-        static void writeResul(StreamWriter sr, int index)
+        private static void writeResul(StreamWriter sr, int index)
         {
             double[] stats = population[index].getAttributes();
             for (int i = 0; i < stats.Length; ++i)
@@ -165,26 +162,49 @@ namespace SabberStoneCoreAi.src.Evolutivo
         private static void Main()
         {
             load_Population();
+            population.Sort(((x, y) => y.indScore.CompareTo(x.indScore)));
             StreamWriter er = File.CreateText("evol_1.txt");
             StreamWriter bog = File.CreateText("bestofGen_1.txt");
 
             for (int i = 0; i < num_gen; ++i)
             {
                 normalizeScores();
-                List<Individuo> new_pop = new List<Individuo>();
-                for (int k = 0; k < popSize; ++k)
+
+                List<Individuo> hijos = new List<Individuo>();
+                for (int k = 0; k < num_hijos / 2; ++k)
                 {
-                    Tuple<Individuo, Individuo> parents = selection();
-                    //Primero se crea un individuo cruzando los padres y luego se muta
-                    new_pop.Add(new Individuo(new Individuo(parents.Item1, parents.Item2)));
+                    Individuo p1, p2;
+                    (p1, p2) = selection();
+                    //Primero se crea dos cruzando los padres y luego se muta
+                    Individuo h1;
+                    Individuo h2;
+                    (h1, h2) = Cruce.combinacion(p1, p2);
+                    double prob1 = Globals.r.NextDouble();
+                    double prob2 = Globals.r.NextDouble();
+                    if (prob1 < Mut_prop) h1 = Mutacion.totalAcotada(h1, Mut_prop / 2);
+                    if (prob2 < Mut_prop) h2 = Mutacion.totalAcotada(h2, Mut_prop / 2);
+					hijos.Add(h1);
+					hijos.Add(h2);
+
                 }
-                simulate(new_pop);
-                List<Individuo> sort_pop = new List<Individuo>(popSize * 2);
-                sort_pop.AddRange(population);
-                sort_pop.AddRange(new_pop);
-                sort_pop.Sort((x, y) => y.indScore.CompareTo(x.indScore));
-                sort_pop.RemoveRange(popSize, popSize);
-                population = sort_pop;
+                simulate(hijos);
+
+                List<Individuo> aleat = new List<Individuo>();
+                for (int k = 0; k < num_al; ++k)
+                {
+                    aleat.Add(new Individuo());
+                }
+                simulate(aleat);
+
+                List<Individuo> newPop = new List<Individuo>(popSize);
+                population.RemoveRange(num_Padres, popSize - num_Padres);
+                newPop.AddRange(population);
+                newPop.AddRange(hijos);
+                newPop.AddRange(aleat);
+                population = newPop;
+                population.Sort(((x, y) => y.indScore.CompareTo(x.indScore)));
+
+
                 er.Write($"Generacion {i + 1} : ");
                 er.WriteLine(population[0].indScore);
                 bog.WriteLine($"Generacion {i + 1} : ");

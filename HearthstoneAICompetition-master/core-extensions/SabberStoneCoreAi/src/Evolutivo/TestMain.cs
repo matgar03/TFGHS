@@ -17,6 +17,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
         {
             Individuo p1 = new Individuo();
             Individuo p2 = new Individuo();
+            Individuo h1, h2;
             //Probar el cruce por corte
             Cruce.corte(p1, p2, 1);
             Cruce.corte(p1, p2, 5);
@@ -25,7 +26,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
             //Probar el cruce uniforme
             Cruce.uniforme(p1, p2);
             //Probar el cruce combinacion
-            Cruce.combinacion(p1, p2);
+            (h1, h2) = Cruce.combinacion(p1, p2);
             Mutacion.totalAcotada(p1, 0.5);
             Mutacion.aleatoriaNoCota(p1);
         }
