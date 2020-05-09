@@ -207,11 +207,14 @@ namespace SabberStoneCoreAi.src.Evolutivo
 
                 er.Write($"Generacion {i + 1} : ");
                 er.WriteLine(population[0].indScore);
+                er.Flush();
                 bog.WriteLine($"Generacion {i + 1} : ");
-                writeResul(bog, 0);
+                for (int k = 0; k < 5; ++k)
+                {
+                    writeResul(bog, k);
+                }
                 bog.WriteLine("-------------------");
                 bog.Flush();
-                er.Flush();
             }
             save_Population();
 
