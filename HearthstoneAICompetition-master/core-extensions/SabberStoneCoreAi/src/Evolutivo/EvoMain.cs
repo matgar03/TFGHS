@@ -14,14 +14,14 @@ namespace SabberStoneCoreAi.src.Evolutivo
     class EvoMain
     {
         private static bool cambio = true; //si se cambia el número de partidas el score guardado no es válido y hay que volver a calcularlo
-        private static int numPartidas = 1;
-        private static int popSize = 10;
+        private static int numPartidas = 100;
+        private static int popSize = 200;
         private static List<Individuo> population;
         private static List<float> scores;
-        private static int num_gen = 2;
-        private static int num_Padres = 3;
-        private static int num_hijos = 4;
-        private static int num_al = 3;
+        private static int num_gen = 30;
+        private static int num_Padres = 60;
+        private static int num_hijos = 90;
+        private static int num_al = 50;
         private static double Mut_prop = 0.2;
 
         private static float fitness(Individuo bot)
@@ -183,8 +183,8 @@ namespace SabberStoneCoreAi.src.Evolutivo
                     double prob2 = Globals.r.NextDouble();
                     if (prob1 < Mut_prop) h1 = Mutacion.totalAcotada(h1, Mut_prop / 2);
                     if (prob2 < Mut_prop) h2 = Mutacion.totalAcotada(h2, Mut_prop / 2);
-					hijos.Add(h1);
-					hijos.Add(h2);
+                    hijos.Add(h1);
+                    hijos.Add(h2);
 
                 }
                 simulate(hijos);
