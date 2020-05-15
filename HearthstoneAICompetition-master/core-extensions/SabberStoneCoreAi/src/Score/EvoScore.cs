@@ -16,16 +16,12 @@ namespace SabberStoneCoreAi.Score
 		4: vida del minion
 		5: ataque del minion
 		---- habilidades de los minions ----
-		6: tener provocar
-		7: tener veneno
-		8: tener último aliento (algo al morir)
-		9: tener inspirar
-		10: tener escudo divino
-		11: tener robo de vida
-		12: tener cargar
-		13: tener sigilo
-		14: tener grito de batalla
-		15: tener viento furioso
+		6: tener provocar/
+		7: tener último aliento (algo al morir)/
+		8: tener escudo divino/
+		9: tener cargar/
+		10: tener grito de batalla/
+		11: tener viento furioso/
 		*/
 
         public double Rate()
@@ -83,15 +79,11 @@ namespace SabberStoneCoreAi.Score
             if (!minion.IsFrozen) value += Globals.WEIGHT[5] * minion.AttackDamage;
 
             if (minion.HasTaunt) value += Globals.WEIGHT[6] * minion.Health;
-            if (minion.Poisonous) value += Globals.WEIGHT[7];
-            if (minion.HasDeathrattle) value += Globals.WEIGHT[8];
-            if (minion.HasInspire) value += Globals.WEIGHT[9];
-            if (minion.HasDivineShield) value += Globals.WEIGHT[10];
-            if (minion.HasLifeSteal) value += Globals.WEIGHT[11] * minion.AttackDamage;
-            if (minion.HasCharge) value += Globals.WEIGHT[12] * minion.AttackDamage;
-            if (minion.HasStealth) value += Globals.WEIGHT[13] * minion.AttackDamage;
-            if (minion.HasBattleCry) value += Globals.WEIGHT[14];
-            if (minion.HasWindfury) value += Globals.WEIGHT[15] * minion.AttackDamage;
+            if (minion.HasDeathrattle) value += Globals.WEIGHT[7];
+            if (minion.HasDivineShield) value += Globals.WEIGHT[8];
+            if (minion.HasCharge) value += Globals.WEIGHT[9] * minion.AttackDamage;
+            if (minion.HasBattleCry) value += Globals.WEIGHT[10];
+            if (minion.HasWindfury) value += Globals.WEIGHT[11] * minion.AttackDamage;
 
             return value;
         }

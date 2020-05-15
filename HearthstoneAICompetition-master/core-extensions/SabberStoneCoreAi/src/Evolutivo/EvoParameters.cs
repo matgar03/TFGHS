@@ -10,7 +10,7 @@ es la única que sabe cual es el número de genes y se lo dice ella a los demás
 static class EvoParameters
 {
 
-    public static readonly int numGenes = 16;
+    public static readonly int numGenes = 12;
 
     public static readonly int populationSize = 200;
 
