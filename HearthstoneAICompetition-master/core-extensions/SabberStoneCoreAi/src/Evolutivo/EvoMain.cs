@@ -33,7 +33,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
 				{
 					Individuo p1, p2;
 					//Se selecionan los dos padres mediante Ruleta,Rango o Torneo
-					(p1, p2) = (Seleccion.Ruleta(pop),Seleccion.Ruleta(pop));
+					(p1, p2) = (Seleccion.Torneo(pop,EvoParameters.tamTorneo),Seleccion.Torneo(pop, EvoParameters.tamTorneo));
 
 					//Se cruzan mediante Corte, Uniforme o Combinacion
 					(Individuo h1,Individuo h2) = Cruce.Combinacion(p1, p2);
@@ -59,16 +59,15 @@ namespace SabberStoneCoreAi.src.Evolutivo
 				er.Flush();
 
 				bog.WriteLine($"Generacion {i + 1} : ");
-				for (int k = 0; k < 5; ++k)
-				{
-					best.saveIndividual(bog);
-				}
+				
+				pop.saveNBestIndividuos(5,bog);
+				
 				bog.WriteLine("-------------------");
 				bog.Flush();
 			}
 
 			StreamWriter save = File.CreateText("save_0.txt");
-			pop.saveNIndviduos(pop.getTam(),save);
+			pop.saveNBestIndividuos(pop.getTam(),save);
 
 
 

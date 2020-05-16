@@ -16,16 +16,16 @@ static class EvoParameters
 
     public static readonly int numPartidas = 100;
 
-    public static readonly int elitismo = 20;
+    public static readonly int elitismo = 10;
 
     public static readonly int aleatoriosInsertados = 50;
 
-	public static readonly int numHijos = 130;
+	public static readonly int numHijos = 140;
 
 	public static readonly double probabilidadMutacion = 0.3;
 
 	public static readonly int numGeneraciones = 15;
 
-	public static readonly int tamTorneo = 15;
+	public static readonly int tamTorneo = 30;
 
 }

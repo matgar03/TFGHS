@@ -14,10 +14,8 @@ namespace SabberStoneCoreAi.src.Evolutivo
     class Population
     {
         private List<Individuo> listaIndividuos;
-        private readonly int elitismo = 20;
-        private readonly int tam = 200;
+        private readonly int tam =EvoParameters.populationSize;
 
-        private readonly int aleatoriosNuevos = 60;
 
         public Population()
         {
@@ -62,9 +60,10 @@ namespace SabberStoneCoreAi.src.Evolutivo
 
        
 
-        public void saveNIndviduos(int n, StreamWriter sr)
+        public void saveNBestIndividuos(int n, StreamWriter sr)
         {
-            int tope = Math.Min(n, tam);
+			listaIndividuos.Sort(((x, y) => y.getScore().CompareTo(x.getScore())));
+			int tope = Math.Min(n, tam);
             for (int i = 0; i < tope; ++i)
             {
                 listaIndividuos[i].saveIndividual(sr);

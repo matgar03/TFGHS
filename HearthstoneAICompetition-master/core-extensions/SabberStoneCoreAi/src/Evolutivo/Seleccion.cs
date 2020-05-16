@@ -13,7 +13,6 @@ namespace SabberStoneCoreAi.src.Evolutivo
 	class Seleccion
 	{
 
-		//por testear
 		private static (double, int)[] obtenerPuntuacionIndividuo(Population pop)
 		{
 			(double, int)[] scoreAndIndividual = new (double, int)[pop.getTam()];
@@ -25,7 +24,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
 
 		}
 
-		//por testear
+	
 		public static Individuo Ruleta(Population pop)
 		{
 			(double, int)[] scoreAndIndividual = obtenerPuntuacionIndividuo(pop);
@@ -57,12 +56,11 @@ namespace SabberStoneCoreAi.src.Evolutivo
 			return pop.getIndividualAt(pop.getTam()-1);
 		}
 
-		//por testear
 		public static Individuo Rango(Population pop)
 		{
 			(double, int)[] scoreAndIndividual = obtenerPuntuacionIndividuo(pop);
 			Array.Sort(scoreAndIndividual);
-			double sumDeRangos = (pop.getTam() * (pop.getTam() - 1)) / 2;
+			double sumDeRangos = (pop.getTam() * (pop.getTam() + 1)) / 2;
 
 			double acum = 0;
 			for (int i = 0; i < pop.getTam(); ++i)
@@ -88,7 +86,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
 
 		}
 
-		//por testear
+		
 		public static Individuo Torneo(Population pop, int tamTorneo)
 		{
 			return pop.getBestofSubpopulation(tamTorneo);
