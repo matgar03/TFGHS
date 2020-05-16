@@ -9,6 +9,7 @@ using SabberStoneCore.Tasks.PlayerTasks;
 using SabberStoneCoreAi.src;
 using SabberStoneCoreAi.Score;
 using SabberStoneCoreAi.src.Agent;
+using System.Diagnostics;
 
 namespace SabberStoneCoreAi.Agent
 {
@@ -29,12 +30,14 @@ namespace SabberStoneCoreAi.Agent
         {
             var options = poGame.CurrentPlayer.Options();
             tree = new Arbolbueno(poGame, options);
-            int visits = 1000;
-            for (int i = 0; i < visits; ++i)
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			while(stopwatch.ElapsedMilliseconds < Globals.MAX_TIME)
             {
 				if (!tree.Simulation())
 					break;
             }
+			stopwatch.Stop();
             return tree.getBestNode().getTask();
         }
 

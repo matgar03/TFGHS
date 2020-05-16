@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <LangVersion>7.2</LangVersion>
-    <StartupObject>SabberStoneCoreAi.src.Evolutivo.EvoMain</StartupObject>
+    <StartupObject>SabberStoneCoreAi.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SabberStoneCore\SabberStoneCore.csproj" />

@@ -9,10 +9,11 @@ using SabberStoneCore.Tasks.PlayerTasks;
 using SabberStoneCoreAi.src;
 using SabberStoneCoreAi.Score;
 using SabberStoneCoreAi.src.Agent;
+using System.Diagnostics;
 
 namespace SabberStoneCoreAi.Agent
 {
-    class MCTSmalo : AbstractAgent
+    class SimTreeAgent : AbstractAgent
     {
         Arbolmalo tree;
         private const int VISITSxNODE = 80;
@@ -29,14 +30,21 @@ namespace SabberStoneCoreAi.Agent
         {
             var options = poGame.CurrentPlayer.Options();
 			tree = new Arbolmalo(poGame, options);
-            //el end_turn no lo vamos a visitar
-            int visits = VISITSxNODE * (options.Count - 1);
-            for (int i = 0; i < visits; ++i)
-            {
-                bool exploting = ((double)i / (double)visits) > EXPLORATION_RATE;
-                tree.Simulation(i, exploting);
-            }
-            return tree.getBestNode().getTask();
+			if (!tree.isExplorableNodesEmpty())
+			{
+				Stopwatch stopwatch = new Stopwatch();
+				int i = 0;
+				stopwatch.Start();
+				while (stopwatch.ElapsedMilliseconds <= Globals.MAX_TIME)
+				{
+					bool exploting = ((double)stopwatch.ElapsedMilliseconds / (double)Globals.MAX_TIME) > EXPLORATION_RATE;
+					tree.Simulation(i, exploting);
+					++i;
+
+				}
+				stopwatch.Stop();
+			}
+			return tree.getBestNode().getTask();
         }
 
 

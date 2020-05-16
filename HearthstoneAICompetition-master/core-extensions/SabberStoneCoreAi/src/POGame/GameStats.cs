@@ -5,6 +5,7 @@ using System.IO;
 using SabberStoneCore.Enums;
 using SabberStoneCore.Model;
 using SabberStoneCoreAi.Agent;
+using SabberStoneCoreAi.src;
 
 namespace SabberStoneCoreAi.POGame
 {

@@ -53,7 +53,7 @@ namespace SabberStoneCoreAi.src.Agent
 			else
 			{
 				//Estamos explorando todos los nodos por igual
-				node = explorableNodes[i % explorableNodes.Count];
+					node = explorableNodes[i % explorableNodes.Count];
 			}
 			var resultsim = new ResultSim(root, node.getTask(), getStateValue(root));
 			node.simulation(resultsim);
@@ -70,6 +70,10 @@ namespace SabberStoneCoreAi.src.Agent
 		private int getStateValue(POGame.POGame state)
 		{
 			return new ScoreUtility { Controller = state.CurrentPlayer }.Rate();
+		}
+		public bool isExplorableNodesEmpty()
+		{
+			return explorableNodes.Count == 0;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using SabberStoneCore.Tasks.PlayerTasks;
 using SabberStoneCoreAi.Agent;
@@ -27,7 +28,9 @@ namespace SabberStoneCoreAi.src.Agent
 		{
 			root = new Nodo2(poGame);
 			int result;
-			for (int i = 0; i < nsimulations; ++i)
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			while (stopwatch.ElapsedMilliseconds < Globals.MAX_TIME)
 			{
 				Nodo2 selNode = Selection(root);
 				//la raiz tiene null la task por eso lo comprobamos, como siempre tiene hijos nunca debería entrar en el if
@@ -51,6 +54,7 @@ namespace SabberStoneCoreAi.src.Agent
 				}
 				
 			}
+			stopwatch.Stop();
 			return root.bestChild().getTask();
 		}
 
