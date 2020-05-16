@@ -20,10 +20,11 @@ namespace SabberStoneCoreAi.src.Evolutivo
 			//Se genera la poblacion inicial y ya se evalúa
 			Population pop = new Population();
 
-			StreamWriter er = File.CreateText("evol_0.txt");
-			StreamWriter bog = File.CreateText("bestofGen_0.txt");
+			StreamWriter er = File.CreateText("evol_1.txt");
+			StreamWriter bog = File.CreateText("bestofGen_1.txt");
+			StreamWriter save = File.CreateText("save_1.txt");
 
-			
+
 
 			for (int i = 0; i < EvoParameters.numGeneraciones; ++i)
 			{
@@ -66,7 +67,7 @@ namespace SabberStoneCoreAi.src.Evolutivo
 				bog.Flush();
 			}
 
-			StreamWriter save = File.CreateText("save_0.txt");
+			
 			pop.saveNBestIndividuos(pop.getTam(),save);
 
 
