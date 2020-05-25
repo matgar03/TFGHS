@@ -10,7 +10,7 @@ es la única que sabe cual es el número de genes y se lo dice ella a los demás
 static class EvoParameters
 {
 	//Numero de variables de cada individuo
-    public static readonly int numGenes = 12;
+    public static readonly int numGenes = 13;
 	//Numero poblicación
     public static readonly int populationSize = 200;
 	//Numero de partidas jugadas durante el fitness
@@ -27,5 +27,7 @@ static class EvoParameters
 	public static readonly int numGeneraciones = 15;
 	//Tamaño del torneo en el método de seleccion por torneo
 	public static readonly int tamTorneo = 30;
+	//Tamaño de la sublista que se ordena
+	public static readonly int tamScramble = 4;
 
 }

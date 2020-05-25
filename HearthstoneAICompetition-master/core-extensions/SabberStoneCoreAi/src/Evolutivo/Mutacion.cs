@@ -47,6 +47,40 @@ namespace SabberStoneCoreAi.src.Evolutivo
             return res;
         }
 
+		public static Individuo Scramble(Individuo ind, int longScramble)
+		{
+			Individuo res;
+			double[] punt = ind.getAttributes();
+			int[] chosen = new int[longScramble];
+			for(int i = 0; i < longScramble; ++i)
+			{
+				chosen[i] = Globals.r.Next(punt.Length);
+			}
+			int[] newLoc = new int[longScramble];
+			Array.Copy(chosen, newLoc, longScramble);
+			double[] new_punt = new double[punt.Length];
+			Array.Copy(punt, new_punt, punt.Length);
+			Shuffle(Globals.r, newLoc);
+			for (int i = 0; i < longScramble; ++i)
+			{
+				new_punt[chosen[i]] = punt[newLoc[i]];
+			}
+			res = new Individuo(new_punt);
+			return res;
 
-    }
+		}
+
+		private static void Shuffle(Random rng, int[] array)
+		{
+			int n = array.Length;
+			while (n > 1)
+			{
+				int k = rng.Next(n--);
+				int temp = array[n];
+				array[n] = array[k];
+				array[k] = temp;
+			}
+		}
+
+	}
 }

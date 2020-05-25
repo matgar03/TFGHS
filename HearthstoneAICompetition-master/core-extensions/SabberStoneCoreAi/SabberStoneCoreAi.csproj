@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <LangVersion>7.2</LangVersion>
-    <StartupObject>SabberStoneCoreAi.Program</StartupObject>
+    <StartupObject>SabberStoneCoreAi.src.Evolutivo.EvoMain</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SabberStoneCore\SabberStoneCore.csproj" />
