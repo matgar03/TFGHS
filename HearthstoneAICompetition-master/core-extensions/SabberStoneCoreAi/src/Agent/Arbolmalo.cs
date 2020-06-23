@@ -13,9 +13,11 @@ namespace SabberStoneCoreAi.src.Agent
 		private List<Nodomalo> explorableNodes = new List<Nodomalo>();
 		private List<Nodomalo> sortedNodes = new List<Nodomalo>();
 		private Nodomalo end_turn;
-		public Arbolmalo(POGame.POGame root, List<PlayerTask> options)
+		private string score;
+		public Arbolmalo(POGame.POGame root, List<PlayerTask> options,string score)
 		{
 			this.root = root;
+			this.score = score;
 			initTree(options);
 		}
 
@@ -24,7 +26,7 @@ namespace SabberStoneCoreAi.src.Agent
 			explorableNodes.Clear();
 			sortedNodes.Clear();
 			foreach (PlayerTask opt in options){
-				var nodo = new Nodomalo(opt, 0.0f, this);
+				var nodo = new Nodomalo(opt, 0.0f, this,score);
 				if (opt.PlayerTaskType == PlayerTaskType.END_TURN)
 				{
 					nodo.addValue(getStateValue(root));
@@ -69,7 +71,11 @@ namespace SabberStoneCoreAi.src.Agent
 		}
 		private int getStateValue(POGame.POGame state)
 		{
-			return new ScoreUtility { Controller = state.CurrentPlayer }.Rate();
+			if (score.Equals("utility"))
+				return new ScoreUtility { Controller = state.CurrentPlayer }.Rate();
+			else if (score.Equals("midrange"))
+				return new MidRangeScore { Controller = state.CurrentPlayer }.Rate();
+			else return -1;
 		}
 		public bool isExplorableNodesEmpty()
 		{

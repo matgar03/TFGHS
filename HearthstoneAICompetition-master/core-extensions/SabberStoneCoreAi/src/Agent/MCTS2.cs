@@ -10,9 +10,22 @@ namespace SabberStoneCoreAi.src.Agent
 {
 	class MCTS2 : AbstractAgent
 	{
-
-		int nsimulations = 1000;
 		Nodo2 root;
+		private double C;
+		private string score;
+		private double[] weight = null;
+		public MCTS2(double C, string score)
+		{
+			this.C = C;
+			this.score = score;
+		}
+
+		public MCTS2(double C, string score, double[] pesos)
+		{
+			this.C = C;
+			this.score = score;
+			this.weight = pesos;
+		}
 		public override void FinalizeAgent()
 		{
 			
@@ -26,11 +39,13 @@ namespace SabberStoneCoreAi.src.Agent
 		//hay que comprobar si el seleccionado o el expandido son hojas para simplemente evaluar
 		public override PlayerTask GetMove(POGame.POGame poGame)
 		{
-			root = new Nodo2(poGame);
-			int result;
+			root = new Nodo2(poGame,C,score,weight);
+			double result;
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
+			int it = 0;
 			while (stopwatch.ElapsedMilliseconds < Globals.MAX_TIME)
+			//for (int i =0;i<1000;++i)
 			{
 				Nodo2 selNode = Selection(root);
 				//la raiz tiene null la task por eso lo comprobamos, como siempre tiene hijos nunca debería entrar en el if
@@ -52,10 +67,11 @@ namespace SabberStoneCoreAi.src.Agent
 					}
 					Nodo2.BackPropagation(expNode, result);
 				}
-				
+				++it;
 			}
+			//Console.WriteLine($"Iteraciones: {it}");
 			stopwatch.Stop();
-			return root.bestChild().getTask();
+			return root.bestAverageChild().getTask();
 		}
 
 		public override void InitializeAgent()

@@ -17,25 +17,33 @@ namespace SabberStoneCoreAi.src.Agent
 		List<Nodo2> hijos;
 		List<PlayerTask> posiblesHijos;
 
-		private float value;
+		private double value;
 		private int visits;
+
+		private double C;
+		private static string score;
+		private static double[] weight = null;
 
 		public PlayerTask getTask() { return task; }
 
 		public POGame.POGame getState() { return state; }
-		public float getAverageValue() { return value / visits; }
-		public float getValue() { return value; }
+		public double getAverageValue() { return value / visits; }
+		public double getValue() { return value; }
 		public int getVisits() { return visits; }
 
-		public Nodo2(POGame.POGame state)
+		public Nodo2(POGame.POGame state, double C, string score1, double[] pesos)
 		{
 			this.state = state;
 			this.padre = null;
 			this.task = null;
 			this.hijos = new List<Nodo2>();
 			posiblesHijos = state.CurrentPlayer.Options();
+
+			this.C = C;
+			score = score1;
+			weight = pesos;
 		}
-		public Nodo2(POGame.POGame state, Nodo2 padre, PlayerTask task)
+		public Nodo2(POGame.POGame state, Nodo2 padre, PlayerTask task, double C, string score1, double[] pesos)
 		{
 			this.state = state;
 			this.padre = padre;
@@ -45,6 +53,10 @@ namespace SabberStoneCoreAi.src.Agent
 			if (task.PlayerTaskType != PlayerTaskType.END_TURN)
 				posiblesHijos = state.CurrentPlayer.Options();
 			else posiblesHijos = new List<PlayerTask>();
+
+			this.C = C;
+			score = score1;
+			weight = pesos;
 		}
 
 		public bool isExpanded()
@@ -59,7 +71,7 @@ namespace SabberStoneCoreAi.src.Agent
 			//simulamos el estado después de aplicarlo
 			POGame.POGame nextState = state.Simulate(new List<PlayerTask>() { posiblesHijos[i] })[posiblesHijos[i]];
 			//creamos el hijo expandido
-			Nodo2 expNode = new Nodo2(nextState, this, posiblesHijos[i]);
+			Nodo2 expNode = new Nodo2(nextState, this, posiblesHijos[i],C,score,weight);
 			//lo añadimos al árbol
 			hijos.Add(expNode);
 			//lo eliminamos de los posibles hijos porque ya está en hijos
@@ -71,23 +83,34 @@ namespace SabberStoneCoreAi.src.Agent
 			hijos.Sort((x, y) => y.ucb().CompareTo(x.ucb()));
 			return hijos[0];
 		}
+
+		public Nodo2 bestAverageChild()
+		{
+			hijos.Sort((x, y) => y.getAverageValue().CompareTo(x.getAverageValue()));
+			return hijos[0];
+		}
 		public float ucb()
 		{
-			return (float)(getAverageValue() + Globals.C * Math.Sqrt(Math.Log(padre.getVisits()) / visits));
+			return (float)(getAverageValue() + C * Math.Sqrt(Math.Log(padre.getVisits()) / visits));
 		}
-		private void addValue(float value)
+		private void addValue(double value)
 		{
 			++visits;
 			this.value += value;
 		}
-		public static int GetStateValue(POGame.POGame state)
+		public static double GetStateValue(POGame.POGame state)
 		{
-			//utilizamos al oponente porque evaluamos después de pasar turno
-			return new ScoreUtility { Controller = state.CurrentOpponent }.Rate();
+			if (score.Equals("utility"))
+				return new ScoreUtility { Controller = state.CurrentOpponent }.Rate();
+			else if (score.Equals("midrange"))
+				return new MidRangeScore { Controller = state.CurrentOpponent }.Rate();
+			else if (score.Equals("evo"))
+				return new EvoScore { Controller = state.CurrentOpponent }.Rate(weight);
+			else return -1;
 		}
 
 		//igual que en el otro MCTS
-		public static int Simulate(POGame.POGame state)
+		public static double Simulate(POGame.POGame state)
 		{
 			List<PlayerTask> options = state.CurrentPlayer.Options();
 			int selectedOpt = Globals.r.Next(0, options.Count);
@@ -101,7 +124,7 @@ namespace SabberStoneCoreAi.src.Agent
 		}
 
 		//igual que en el otro MCTS
-		public static void BackPropagation(Nodo2 node, int result)
+		public static void BackPropagation(Nodo2 node, double result)
 		{
 			node.addValue(result);
 			if (node.padre != null)

@@ -21,13 +21,17 @@ namespace SabberStoneCoreAi.Agent
 		private int visits;
 		private Arbolbueno tree;
 		private Nodobueno padre;
-		public Nodobueno (PlayerTask task, float initialValue, Arbolbueno tree,Nodobueno padre)
+		private double C;
+		private string score;
+		public Nodobueno (PlayerTask task, float initialValue, Arbolbueno tree,Nodobueno padre, double C, string score)
 		{
 			this.task = task;
 			this.value = initialValue;
 			this.tree = tree;
 			this.padre = padre;
 			this.visits = 0;
+			this.C = C;
+			this.score = score;
 		}
 
 		public PlayerTask getTask() { return task; }
@@ -94,7 +98,11 @@ namespace SabberStoneCoreAi.Agent
 		}
 		private int getStateValue(POGame.POGame state)
 		{
-			return new ScoreUtility { Controller = state.CurrentPlayer}.Rate();
+			if (score.Equals("utility"))
+				return new ScoreUtility { Controller = state.CurrentPlayer }.Rate();
+			else if (score.Equals("midrange"))
+				return new MidRangeScore { Controller = state.CurrentPlayer }.Rate();
+			else return -1;
 		}
 
 		public void addState(POGame.POGame state)
@@ -108,7 +116,7 @@ namespace SabberStoneCoreAi.Agent
 
 		public float ucb()
 		{
-			return (float)(getAverageValue() + Globals.C * Math.Sqrt(Math.Log(padre.getVisits())/visits));
+			return (float)(getAverageValue() + C * Math.Sqrt(Math.Log(padre.getVisits())/visits));
 		}
 	}
 

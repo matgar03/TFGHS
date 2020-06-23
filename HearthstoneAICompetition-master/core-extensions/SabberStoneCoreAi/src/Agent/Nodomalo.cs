@@ -18,12 +18,16 @@ namespace SabberStoneCoreAi.Agent
 		private float value;
 		private int visits;
 		private Arbolmalo tree;
-		public Nodomalo (PlayerTask task, float initialValue, Arbolmalo tree)
+
+		private string score;
+		public Nodomalo (PlayerTask task, float initialValue, Arbolmalo tree, string score)
 		{
 			this.task = task;
 			this.value = initialValue;
 			this.tree = tree;
 			this.visits = 0;
+
+			this.score = score;
 		}
 
 		public PlayerTask getTask() { return task; }
@@ -61,7 +65,11 @@ namespace SabberStoneCoreAi.Agent
 
 		private int getStateValue(POGame.POGame state)
 		{
-			return new ScoreUtility { Controller = state.CurrentPlayer}.Rate();
+			if (score.Equals("utility"))
+				return new ScoreUtility { Controller = state.CurrentPlayer }.Rate();
+			else if (score.Equals("midrange"))
+				return new MidRangeScore { Controller = state.CurrentPlayer }.Rate();
+			else return -1;
 		}
 	}
 

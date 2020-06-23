@@ -13,15 +13,14 @@ using System.Diagnostics;
 
 namespace SabberStoneCoreAi.Agent
 {
-    class SimTreeAgent : AbstractAgent
+    class MCTS1 : AbstractAgent
     {
-        Arbolmalo tree;
-        private double EXPLORATION_RATE;
+        Arbolbueno tree;
+		private double C;
 		private string score;
-
-		public SimTreeAgent(double exp_rate,string score)
+		public MCTS1(double C,string score)
 		{
-			EXPLORATION_RATE = exp_rate;
+			this.C = C;
 			this.score = score;
 		}
         public override void FinalizeAgent()
@@ -35,25 +34,17 @@ namespace SabberStoneCoreAi.Agent
         public override PlayerTask GetMove(SabberStoneCoreAi.POGame.POGame poGame)
         {
             var options = poGame.CurrentPlayer.Options();
-			tree = new Arbolmalo(poGame, options,score);
-			if (!tree.isExplorableNodesEmpty())
-			{
-				Stopwatch stopwatch = new Stopwatch();
-				int i = 0;
-				stopwatch.Start();
-				while (stopwatch.ElapsedMilliseconds <= Globals.MAX_TIME)
-				{
-					bool exploting = ((double)stopwatch.ElapsedMilliseconds / (double)Globals.MAX_TIME) > EXPLORATION_RATE;
-					tree.Simulation(i, exploting);
-					++i;
-
-				}
-				stopwatch.Stop();
-			}
-			return tree.getBestNode().getTask();
+            tree = new Arbolbueno(poGame, options,C,score);
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			while(stopwatch.ElapsedMilliseconds < Globals.MAX_TIME)
+            {
+				if (!tree.Simulation())
+					break;
+            }
+			stopwatch.Stop();
+            return tree.getBestNode().getTask();
         }
-
-
 
         public override void InitializeAgent()
         {

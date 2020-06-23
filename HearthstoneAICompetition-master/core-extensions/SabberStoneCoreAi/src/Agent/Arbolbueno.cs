@@ -14,20 +14,24 @@ namespace SabberStoneCoreAi.src.Agent
 		private List<Nodobueno> explorableNodes = new List<Nodobueno>();
 		private List<Nodobueno> sortedNodes = new List<Nodobueno>();
 		private Nodobueno end_turn;
-		public Arbolbueno(POGame.POGame root, List<PlayerTask> options)
+		private double C;
+		private string score;
+		public Arbolbueno(POGame.POGame root, List<PlayerTask> options,double C,string score)
 		{
 			this.root = root;
+			this.C = C;
+			this.score = score;
 			initTree(options);
 		}
 
 		private void initTree(List<PlayerTask> options)
 		{
-			Nodobueno padreInicial = new Nodobueno(null, 0.0f, this, null);
+			Nodobueno padreInicial = new Nodobueno(null, 0.0f, this, null,C,score);
 			padreInicial.addValue(getStateValue(root));
 			explorableNodes.Clear();
 			sortedNodes.Clear();
 			foreach (PlayerTask opt in options){
-				var nodo = new Nodobueno(opt, 0.0f, this, padreInicial);
+				var nodo = new Nodobueno(opt, 0.0f, this, padreInicial,C,score);
 				if (opt.PlayerTaskType == PlayerTaskType.END_TURN)
 				{
 					nodo.addValue(getStateValue(root));
@@ -67,8 +71,8 @@ namespace SabberStoneCoreAi.src.Agent
 		public Nodobueno getBestNode()
 		{
 			//end turn puede ser null si se juega una carta de escoge entre estas opciones
-			explorableNodes.Sort((x, y) => y.ucb().CompareTo(x.ucb()));
-			if (end_turn != null && (explorableNodes.Count == 0 || end_turn.ucb() > explorableNodes[0].ucb()))
+			explorableNodes.Sort((x, y) => y.getAverageValue().CompareTo(x.getAverageValue()));
+			if (end_turn != null && (explorableNodes.Count == 0 || end_turn.getAverageValue() > explorableNodes[0].getAverageValue()))
 				return end_turn;
 			else
 				return explorableNodes[0];
@@ -80,7 +84,7 @@ namespace SabberStoneCoreAi.src.Agent
 			var options = state.CurrentPlayer.Options();
 			foreach (PlayerTask opt in options)
 			{
-				var nodo = new Nodobueno(opt, 0.0f, this, node);
+				var nodo = new Nodobueno(opt, 0.0f, this, node,C,score);
 				if (opt.PlayerTaskType == PlayerTaskType.END_TURN)
 				{
 					nodo.addValue(getStateValue(state));
@@ -107,7 +111,11 @@ namespace SabberStoneCoreAi.src.Agent
 
 		private int getStateValue(POGame.POGame state)
 		{
-			return new ScoreUtility { Controller = state.CurrentPlayer }.Rate();
+			if (score.Equals("utility"))
+				return new ScoreUtility { Controller = state.CurrentPlayer }.Rate();
+			else if (score.Equals("midrange"))
+				return new MidRangeScore { Controller = state.CurrentPlayer }.Rate();
+			else return -1;
 		}
 
 	}
