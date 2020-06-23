@@ -9,4 +9,4 @@ Las clases implementadas por nosotros son:
 
  - Las relativas a
  
- - Las relativas al algoritmo genético en la carpeta Evol.
+ - Las relativas al algoritmo genético en la carpeta [Evol](https://github.com/matgar03/TFGHS/tree/master/HearthstoneAICompetition-master/core-extensions/SabberStoneCoreAi/src/Evolutivo).
