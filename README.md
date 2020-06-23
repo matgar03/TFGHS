@@ -6,5 +6,7 @@ dirigido por Pedro Pablo Gómez Martín y Antonio Alejandro Sánchez Ruiz-Granad
 Este código toma como base el simulador de la competición [Hearthstone AI Competition](https://github.com/ADockhorn/HearthstoneAICompetition).
 
 Las clases implementadas por nosotros son:
- -Las relativas a
- -Las relativas al algoritmo genético en la carpeta Evol.
+
+ - Las relativas a
+ 
+ - Las relativas al algoritmo genético en la carpeta Evol.
