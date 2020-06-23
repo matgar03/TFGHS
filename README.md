@@ -7,6 +7,6 @@ Este código toma como base el simulador de la competición [Hearthstone AI Comp
 
 Las clases implementadas por nosotros son:
 
- - Las relativas a
+ - Las relativas a los agentes en la carpeta [Agent](https://github.com/matgar03/TFGHS/tree/master/HearthstoneAICompetition-master/core-extensions/SabberStoneCoreAi/src/Agent)
  
  - Las relativas al algoritmo genético en la carpeta [Evol](https://github.com/matgar03/TFGHS/tree/master/HearthstoneAICompetition-master/core-extensions/SabberStoneCoreAi/src/Evolutivo).
